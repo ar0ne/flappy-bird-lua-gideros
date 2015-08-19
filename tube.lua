@@ -17,8 +17,8 @@ function Tube:init()
 	
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
 	
-	self.stage_width = application:getContentWidth()
-	self.stage_height = application:getContentHeight()
+	self.stage_width = conf.WIDTH
+	self.stage_height = conf.HEIGHT
 	
 	self.cur_position = self.stage_width
 	
@@ -76,7 +76,6 @@ function Tube:draw()
 		self.pipes_down[i]:setPosition(self.cur_position, i + down_pipes_length - 1)
 		stage:addChild(self.pipes_down[i])
 	end
-	
 	
 end
 

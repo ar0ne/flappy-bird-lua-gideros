@@ -2,19 +2,13 @@ level = Core.class(Sprite)
 
 function level:init()
 
-	local height = application:getContentHeight()
-	local width =  application:getContentWidth()
-
     local bird = Bird.new()
-    bird:setPosition(50, 50)
+    bird:setPosition(conf.WIDTH * 0.3 , conf.HEIGHT / 2)
     
-    local background = Bitmap.new(Texture.new("assets/images/sky.png"))
-    
-    local background_scale =  height / background:getHeight()
-    background:setScale(background_scale, background_scale)
+    local bg = Background.new()
 
     tube = Tube.new()
 	
-    self:addChild(background)   
+    self:addChild(bg)   
     self:addChild(bird)
 end

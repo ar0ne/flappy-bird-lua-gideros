@@ -2,6 +2,8 @@
  <properties mouseToTouch="1" win_org="GiderosMobile" encryptAssets="0" assetsOnly="0" orientation="0" architecture="0" logicalWidth="320" packageName="com.yourdomain.yourapp" iosDevice="0" fps="60" osx_org="GiderosMobile" windowHeight="0" autorotation="0" touchToMouse="1" mouseTouchOrder="0" retinaDisplay="0" encryptCode="0" android_template="0" windowWidth="0" logicalHeight="480" win_domain="giderosmobile.com" scaleMode="0" osx_domain="giderosmobile.com">
   <imageScales/>
  </properties>
+ <file source="background.lua"/>
+ <file source="config.lua"/>
  <file source="level.lua"/>
  <file source="scenemanager.lua"/>
  <folder name="assets">
