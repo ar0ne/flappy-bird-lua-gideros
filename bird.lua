@@ -1,8 +1,10 @@
 Bird = Core.class(Sprite)
 
-function Bird:init()
-	self:addEventListener(Event.ADDED_TO_STAGE, self.onAddedToStage, self)
-	self:addEventListener(Event.REMOVED_FROM_STAGE, self.onRemovedFromStage, self)
+function Bird:init(level, x, y)
+
+	self.level = level
+	self:setPosition(x, y)
+	self.pos_x = x
 	
 	local spritesheet = Texture.new("assets/images/bird.png")
 	
@@ -13,14 +15,34 @@ function Bird:init()
 		Bitmap.new(TextureRegion.new(spritesheet, 0, 72, 34, 24)),
 	}
 	
-	self.frame = 1
 	self:addChild(self.anim[1])
 	
+	for i = 1, #self.anim do
+		self.anim[i]:setAnchorPoint(0.5, 0.5)
+	end
+	
+	self.frame = 1
 	self.nframes = #self.anim
-
 	self.subframe = 0
 	
+	self:createBody()
+	
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
+	--self:addEventListener(Event.MOUSE_DOWN, self.jump, self)
+	self:addEventListener(Event.ADDED_TO_STAGE, self.onAddedToStage, self)
+	self:addEventListener(Event.REMOVED_FROM_STAGE, self.onRemovedFromStage, self)
+	
+	local timer = Timer.new(200)
+	timer:addEventListener(Event.TIMER, self.jump, self)
+	 
+	self:addEventListener(Event.MOUSE_DOWN, function()
+		self:jump()
+		timer:start()
+	end)
+	 
+	self:addEventListener(Event.MOUSE_UP, function()
+		timer:stop()
+	end)
 	
 end
 
@@ -33,7 +55,28 @@ function Bird:onRemovedFromStage(event)
 end
 
 function Bird:onEnterFrame(event)
-	-- bird animation
+
+	self:birdAnimation()
+	
+	local x, y = self.body:getPosition()
+	if self.body and x ~= self.pos_x then
+		self.body:setPosition(self.pos_x, y)
+	end
+	
+	local vel_x, vel_y = self.body:getLinearVelocity()
+	--print(vel_x, vel_y)
+	
+	if vel_y > 10 then
+		self.body:setLinearVelocity(vel_x, 10)
+	elseif vel_y < -10 then
+		self.body:setLinearVelocity(vel_x, -10)
+	end
+	
+	
+end
+
+function Bird:birdAnimation()
+		-- bird animation
 	self.subframe = self.subframe + 1
 
 	if self.subframe > 4 then
@@ -50,7 +93,37 @@ function Bird:onEnterFrame(event)
 	end
 end
 
+function Bird:createBody()
+
+	local body = self.level.world:createBody{
+		type = b2.DYNAMIC_BODY
+	}
+	
+	local radius = self.anim[1]:getWidth() / 2
+	
+	body:setPosition(self:getPosition())
+	body:setAngle(math.rad(self:getRotation()))
+	
+	local circle = b2.CircleShape.new(0, 0, radius)
+	
+	local fixture = body:createFixture{
+		shape = circle,
+		density = 1.0,
+		friction = 0,
+		restitution = 1
+	}
+	
+	body.type = "player"
+	self.body = body
+	body.object = self
+	
+	table.insert(self.level.bodies, body)
+end
+
 function Bird:jump()
+	--event:stopPropagation()
+	local x, y = self.body:getPosition()
+    self.body:applyLinearImpulse(0, -5, self.pos_x, y)
 	
 end
 

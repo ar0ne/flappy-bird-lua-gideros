@@ -36,8 +36,9 @@ function Background:onEnterFrame(event)
 	for i = 1, #self.background do
 		self.background[i]:setPosition(self.background[i]:getX() - self.bg_speed , 0)
 			
+		-- print(i .. ':' .. self.background[i]:getX() + self.bg_width)
 		-- if some image hide from screen then replace it
-		if self.background[i]:getX() + self.bg_width < 0  then
+		if self.background[i]:getX() + self.bg_width <= 0  then
 			self.background[i]:setX(self.bg_width )
 		end
 	end

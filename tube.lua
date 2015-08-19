@@ -1,28 +1,28 @@
 Tube = Core.class(Sprite)
 
-function Tube:init()
+function Tube:init(level)
+	
+	self.level = level
 	
 	self.pipe_texture = Texture.new("assets/images/pipe.png")
 	self.pipe_down = Bitmap.new(Texture.new("assets/images/pipe-down.png"))
 	self.pipe_up = Bitmap.new(Texture.new("assets/images/pipe-up.png"))
+		
+	self.speed = conf.TUBE_SPEED
+	self.stage_width = conf.WIDTH
+	self.stage_height = conf.HEIGHT
+	self.offset = conf.TUBE_OFFSET
+	
+	local pipe_scale = 1.4
 	
 	self.pipe_down:setAnchorPoint(0.5, 0)
 	self.pipe_up:setAnchorPoint(0.5, 0)
 	
-	local pipe_scale = 1.4
-	self.speed = 1.2
-	
 	self.pipe_down:setScale(pipe_scale, pipe_scale)
 	self.pipe_up:setScale(pipe_scale, pipe_scale)
 	
-	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
-	
-	self.stage_width = conf.WIDTH
-	self.stage_height = conf.HEIGHT
-	
 	self.cur_position = self.stage_width
 	
-	self.offset = 170
 	self.pipe__top, self.pipe__bottom = self:getRandomTubeHeights()
 	
 	self.pipes_up = {}
@@ -30,6 +30,13 @@ function Tube:init()
 	
 	self:setPipesBodies()
 	
+	--------------
+	self:createBody()
+	
+	--------------
+	
+	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
+
 	stage:addChild(self.pipe_down)
 	stage:addChild(self.pipe_up)
 	
@@ -41,6 +48,9 @@ function Tube:onEnterFrame(event)
 
 		if self.cur_position > - self.pipe_down:getWidth() / 2 then
 			self.cur_position = self.cur_position - self.speed
+			self.body_up:setPosition(self.cur_position, (self.pipe__top + self.pipe_up:getHeight()) / 2)
+			local bottom_height = self.stage_height - self.pipe__bottom + self.pipe_down:getHeight()
+			self.body_down:setPosition(self.cur_position, self.pipe__bottom + bottom_height / 2)
 		else
 			self.cur_position = self.stage_width + self.pipe_down:getWidth() / 2
 			
@@ -54,6 +64,12 @@ function Tube:onEnterFrame(event)
 			self.pipe__top, self.pipe__bottom = self:getRandomTubeHeights()
 			
 			self:setPipesBodies()
+			
+			-- @TODO: how to check if last cell is not our tube
+			table.remove(self.level.bodies)
+			table.remove(self.level.bodies)
+			
+			self:createBody()
 		end
 	
 		self:draw()
@@ -98,5 +114,59 @@ function Tube:setPipesBodies()
 		self.pipes_down[i]:setAnchorPoint(0.5, 0)
 	end
 	
+end
+
+function Tube:createBody()
+	local body_up = self.level.world:createBody {
+		type = b2.STATIC_BODY
+	}
 	
+	local poly_up = b2.PolygonShape.new()
+	
+	poly_up:setAsBox(self.pipe_up:getWidth()/2, (self.pipe__top + self.pipe_up:getHeight()) / 2)
+	
+	body_up:setPosition(self.cur_position, (self.pipe__top + self.pipe_up:getHeight()) / 2)
+	body_up:setAngle(math.rad(self:getRotation()))
+		
+	local fixture_up = body_up:createFixture {
+		shape = poly_up, 
+		density = 1.0, 
+		friction = 0.1, 
+		restitution = 0.2
+	}
+	
+	body_up.type = "wall"
+	self.body_up = body_up
+	body_up.object = self
+	
+	table.insert(self.level.bodies, body_up)
+	
+	--------------
+	
+	local body_down = self.level.world:createBody {
+		type = b2.STATIC_BODY
+	}
+	
+	local poly_down = b2.PolygonShape.new()
+	
+	local bottom_height = self.stage_height - self.pipe__bottom + self.pipe_down:getHeight()
+	poly_down:setAsBox(self.pipe_down:getWidth()/2, bottom_height / 2)
+	
+	body_down:setPosition(self.cur_position, self.pipe__bottom + bottom_height / 2)
+	body_down:setAngle(math.rad(self:getRotation()))
+		
+	local fixture_down = body_down:createFixture {
+		shape = poly_down, 
+		density = 1.0, 
+		friction = 0.1, 
+		restitution = 0.2
+	}
+	
+	body_down.type = "wall"
+	self.body_down = body_down
+	body_down.object = self
+	
+	table.insert(self.level.bodies, body_down)
+	
+
 end

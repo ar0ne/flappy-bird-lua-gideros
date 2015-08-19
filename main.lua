@@ -1,3 +1,4 @@
+
 local sceneManager = SceneManager.new({
 	["level"] = level,
 })
