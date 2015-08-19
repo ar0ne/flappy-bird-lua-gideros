@@ -1,0 +1,16 @@
+<project>
+ <properties windowWidth="0" retinaDisplay="0" encryptAssets="0" logicalHeight="480" win_org="GiderosMobile" packageName="com.yourdomain.yourapp" assetsOnly="0" windowHeight="0" win_domain="giderosmobile.com" mouseToTouch="1" encryptCode="0" fps="60" osx_domain="giderosmobile.com" orientation="0" autorotation="0" logicalWidth="320" architecture="0" scaleMode="0" mouseTouchOrder="0" osx_org="GiderosMobile" android_template="0" iosDevice="0" touchToMouse="1">
+  <imageScales/>
+ </properties>
+ <file source="start_level.lua"/>
+ <file source="scenemanager.lua"/>
+ <folder name="assets">
+  <folder name="sounds"/>
+  <folder name="images">
+   <file source="assets/images/bird.png"/>
+  </folder>
+ </folder>
+ <file source="tube.lua"/>
+ <file source="bird.lua"/>
+ <file source="main.lua"/>
+</project>
