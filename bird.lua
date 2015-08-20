@@ -19,6 +19,7 @@ function Bird:init(level, x, y)
 	
 	for i = 1, #self.anim do
 		self.anim[i]:setAnchorPoint(0.5, 0.5)
+		self.anim[i]:setScale(conf.BIRD_SCALE, conf.BIRD_SCALE)
 	end
 	
 	self.frame = 1
@@ -72,6 +73,11 @@ function Bird:onEnterFrame(event)
 		self.body:setLinearVelocity(vel_x, -10)
 	end
 	
+	local x, y = self.body:getPosition()
+	
+	if y < 0 then
+		self.body:setPosition(x, 0)
+	end	
 	
 end
 
@@ -102,7 +108,7 @@ function Bird:createBody()
 	local radius = self.anim[1]:getWidth() / 2
 	
 	body:setPosition(self:getPosition())
-	body:setAngle(math.rad(self:getRotation()))
+	--body:setAngle(math.rad(self:getRotation()))
 	
 	local circle = b2.CircleShape.new(0, 0, radius)
 	
@@ -123,7 +129,14 @@ end
 function Bird:jump()
 	--event:stopPropagation()
 	local x, y = self.body:getPosition()
-    self.body:applyLinearImpulse(0, -conf.BIRD_SPEED, self.pos_x, y)
+	if y < conf.HEIGHT then
+		if y > 100 then
+			self.body:applyLinearImpulse(0, -conf.BIRD_SPEED, self.pos_x, y)
+		elseif y > 50 then
+			self.body:applyLinearImpulse(0, -conf.BIRD_SPEED/2, self.pos_x, y)
+		end
+		self.level.sounds:play("touch")
+	end
 	
 end
 

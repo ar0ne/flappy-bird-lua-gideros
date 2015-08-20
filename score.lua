@@ -18,7 +18,7 @@ function Score:init()
 	self.count = 0
 	self.imgs = {}
 	
-	--self:updateScore(self.count)
+	self:updateScore(self.count)
 	
 end
 
@@ -26,7 +26,7 @@ function Score:getScoreImages(num)
 	local answer = {}
 	
 	if num == 0 then
-		return Bitmap.new(self.numbers[0])
+		return {Bitmap.new(self.numbers[1])}
 	end
 	
 	while num > 0 do
@@ -48,7 +48,7 @@ end
 
 function Score:setNewScore(new_score)
 
-	if new_score == self.count then
+	if new_score == self.count and new_score ~= 0 then
 		return false
 	end
 	
@@ -75,6 +75,7 @@ function Score:updateScore(new_score)
 		
 			local num = self.imgs[i]
 			
+			num:setScale(conf.SCORE_SCALE, conf.SCORE_SCALE)
 			num:setAnchorPoint(0.5, 0.5)
 			
 			if #self.imgs == 1 then
@@ -87,8 +88,6 @@ function Score:updateScore(new_score)
 			
 			self:addChild(num)
 		end
-		
-		
 	end
 
 end

@@ -13,7 +13,7 @@ function Tube:init(level)
 	self.stage_height = conf.HEIGHT
 	self.offset = conf.TUBE_OFFSET
 	
-	local pipe_scale = 1.4
+	local pipe_scale = conf.PIPE_END_SCALE
 	
 	self.pipe_down:setAnchorPoint(0.5, 0)
 	self.pipe_up:setAnchorPoint(0.5, 0)
@@ -105,6 +105,7 @@ function Tube:setPipesBodies()
 	for i = 1, self.pipe__top - 1 do
 		self.pipes_up[i] = Bitmap.new(self.pipe_texture)
 		self.pipes_up[i]:setAnchorPoint(0.5, 0)
+		self.pipes_up[i]:setScale(conf.PIPE_SCALE)
 	end
 	
 	local down_pipes_length = math.floor(self.pipe__bottom + self.pipe_down:getHeight())
@@ -112,6 +113,7 @@ function Tube:setPipesBodies()
 	for i = 1, down_pipes_length - 1 do
 		self.pipes_down[i] = Bitmap.new(self.pipe_texture)
 		self.pipes_down[i]:setAnchorPoint(0.5, 0)
+		self.pipes_down[i]:setScale(conf.PIPE_SCALE)
 	end
 	
 end

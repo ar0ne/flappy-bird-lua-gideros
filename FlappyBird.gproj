@@ -1,7 +1,10 @@
 <project>
- <properties assetsOnly="0" packageName="com.yourdomain.yourapp" logicalWidth="320" mouseTouchOrder="0" autorotation="0" architecture="0" logicalHeight="480" osx_domain="giderosmobile.com" encryptCode="0" fps="60" retinaDisplay="0" win_org="GiderosMobile" windowHeight="0" scaleMode="0" encryptAssets="0" orientation="0" win_domain="giderosmobile.com" windowWidth="0" mouseToTouch="1" osx_org="GiderosMobile" android_template="0" iosDevice="0" touchToMouse="1">
-  <imageScales/>
+ <properties orientation="0" win_org="GiderosMobile" packageName="com.yourdomain.yourapp" retinaDisplay="0" windowHeight="0" mouseToTouch="1" encryptAssets="0" scaleMode="0" logicalWidth="480" osx_org="GiderosMobile" architecture="0" assetsOnly="0" osx_domain="giderosmobile.com" autorotation="0" iosDevice="0" windowWidth="0" win_domain="giderosmobile.com" encryptCode="0" touchToMouse="1" fps="60" android_template="0" mouseTouchOrder="0" logicalHeight="800">
+  <imageScales>
+   <scale suffix="@2" scale="2"/>
+  </imageScales>
  </properties>
+ <file source="sound.lua"/>
  <file source="score.lua"/>
  <file source="land.lua"/>
  <file source="background.lua"/>
@@ -9,7 +12,13 @@
  <file source="level.lua"/>
  <file source="scenemanager.lua"/>
  <folder name="assets">
-  <folder name="sounds"/>
+  <folder name="sounds">
+   <file source="assets/sounds/sfx_wing.mp3"/>
+   <file source="assets/sounds/sfx_swooshing.mp3"/>
+   <file source="assets/sounds/sfx_point.mp3"/>
+   <file source="assets/sounds/sfx_hit.mp3"/>
+   <file source="assets/sounds/sfx_die.mp3"/>
+  </folder>
   <folder name="images">
    <folder name="fonts">
     <folder name="big">

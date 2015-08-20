@@ -7,15 +7,25 @@ function level:init()
 	self.world = b2.World.new(0, conf.GRAVITY, true)
 	self.bodies = {}
 	
-	local bird = Bird.new(self, conf.WIDTH * 0.3 , conf.HEIGHT / 2)
-    local bg = Background.new()
-    local tube = Tube.new(self)
-	local land = Land.new(self)
+	self.bg = Background.new()
+	self.land = Land.new(self)
+	
+	self.bird = Bird.new(self, conf.WIDTH / 3 , conf.HEIGHT / 2)
+    self.tube = Tube.new(self)
 	self.score = Score.new(self)
 	
-	self:addChild(bg)
-	self:addChild(land)
-    self:addChild(bird)
+	self.sounds = Sound.new()
+	self.sounds:add("point", "assets/sounds/sfx_point.mp3")
+	self.sounds:add("touch", "assets/sounds/sfx_swooshing.mp3")
+	self.sounds:add("die", "assets/sounds/sfx_die.mp3")
+	self.sounds:add("wing", "assets/sounds/sfx_wing.mp3")
+	self.sounds:add("hit", "assets/sounds/sfx_hit.mp3")
+	
+	self.sounds:on()
+	
+	self:addChild(self.bg)
+	self:addChild(self.land)
+    self:addChild(self.bird)
 	self:addChild(self.score)
 	
 	----- DEBUG ---------
@@ -62,12 +72,21 @@ function level:onEnterFrame(event)
 	if not self.paused then
 		self.world:step(1/60, 8, 3)
 		local body
-		--print(#self.bodies)
 		for i = 1, #self.bodies do
 			body = self.bodies[i]
 			body.object:setPosition(body:getPosition())
+			
 			--body.object:setRotation(math.deg(body:getAngle()))
+			body.object:setRotation(math.deg(0))
 		end
+		
+		-- Increment game score
+		--print(math.floor(self.tube.cur_position))
+		if math.floor(self.tube.cur_position) < conf.WIDTH / 3 + 2 and  math.floor(self.tube.cur_position) > conf.WIDTH / 3 - 1 then
+			self.score:updateScore(self.score:getScore() + 1)
+			self.sounds:play("point")
+		end
+		 
 	end
 end
 

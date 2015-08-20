@@ -37,18 +37,18 @@ function Land:init(level)
 		Bitmap.new(Texture.new("assets/images/land.png")),
 	}
 	
-	local land_scale = 1
+	local land_scale = conf.LAND_SCALE
 	
 	self.land_width = self.land_images[1]:getWidth()
 	self.land_height = self.land_images[1]:getHeight()
 		
 	for i = 1, #self.land_images do 
 		self.land_images[i]:setScale(land_scale, land_scale)
-		self.land_images[1]:setPosition((i - 1) * self.land_width , conf.HEIGHT - self.land_height/2 )
+		self.land_images[1]:setPosition((i - 1) * self.land_width , conf.HEIGHT - self.land_height )
 		self:addChild(self.land_images[i])
 	end
 	
-	createBody(self.level, conf.WIDTH / 2, conf.HEIGHT - self.land_height/4, self.land_width/2, self.land_height/4)
+	createBody(self.level, conf.WIDTH / 2, conf.HEIGHT - self.land_height/2, self.land_width, self.land_height/2)
 	
 	self:addEventListener(Event.ADDED_TO_STAGE, self.onAddedToStage, self)
 	self:addEventListener(Event.REMOVED_FROM_STAGE, self.onRemovedFromStage, self)
@@ -65,7 +65,7 @@ end
 
 function Land:onEnterFrame(event)
 	for i = 1, #self.land_images do
-		self.land_images[i]:setPosition(self.land_images[i]:getX() - self.land_speed + 1, conf.HEIGHT - self.land_height/2)
+		self.land_images[i]:setPosition(self.land_images[i]:getX() - self.land_speed + 1, conf.HEIGHT - self.land_height)
 		
 		-- if some image hide from screen then replace it
 		if self.land_images[i]:getX() + self.land_width < 0  then
