@@ -1,7 +1,9 @@
 <project>
- <properties mouseToTouch="1" win_org="GiderosMobile" encryptAssets="0" assetsOnly="0" orientation="0" architecture="0" logicalWidth="320" packageName="com.yourdomain.yourapp" iosDevice="0" fps="60" osx_org="GiderosMobile" windowHeight="0" autorotation="0" touchToMouse="1" mouseTouchOrder="0" retinaDisplay="0" encryptCode="0" android_template="0" windowWidth="0" logicalHeight="480" win_domain="giderosmobile.com" scaleMode="0" osx_domain="giderosmobile.com">
+ <properties assetsOnly="0" packageName="com.yourdomain.yourapp" logicalWidth="320" mouseTouchOrder="0" autorotation="0" architecture="0" logicalHeight="480" osx_domain="giderosmobile.com" encryptCode="0" fps="60" retinaDisplay="0" win_org="GiderosMobile" windowHeight="0" scaleMode="0" encryptAssets="0" orientation="0" win_domain="giderosmobile.com" windowWidth="0" mouseToTouch="1" osx_org="GiderosMobile" android_template="0" iosDevice="0" touchToMouse="1">
   <imageScales/>
  </properties>
+ <file source="score.lua"/>
+ <file source="land.lua"/>
  <file source="background.lua"/>
  <file source="config.lua"/>
  <file source="level.lua"/>
@@ -9,6 +11,21 @@
  <folder name="assets">
   <folder name="sounds"/>
   <folder name="images">
+   <folder name="fonts">
+    <folder name="big">
+     <file source="assets/images/fonts/big/font_big_0.png"/>
+     <file source="assets/images/fonts/big/font_big_1.png"/>
+     <file source="assets/images/fonts/big/font_big_2.png"/>
+     <file source="assets/images/fonts/big/font_big_3.png"/>
+     <file source="assets/images/fonts/big/font_big_4.png"/>
+     <file source="assets/images/fonts/big/font_big_5.png"/>
+     <file source="assets/images/fonts/big/font_big_6.png"/>
+     <file source="assets/images/fonts/big/font_big_7.png"/>
+     <file source="assets/images/fonts/big/font_big_8.png"/>
+     <file source="assets/images/fonts/big/font_big_9.png"/>
+    </folder>
+   </folder>
+   <file source="assets/images/land.png"/>
    <file source="assets/images/pipe-up.png"/>
    <file source="assets/images/pipe-down.png"/>
    <file source="assets/images/pipe.png"/>

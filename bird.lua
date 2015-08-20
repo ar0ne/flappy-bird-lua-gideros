@@ -110,7 +110,7 @@ function Bird:createBody()
 		shape = circle,
 		density = 1.0,
 		friction = 0,
-		restitution = 1
+		restitution = 0.5
 	}
 	
 	body.type = "player"
@@ -123,7 +123,7 @@ end
 function Bird:jump()
 	--event:stopPropagation()
 	local x, y = self.body:getPosition()
-    self.body:applyLinearImpulse(0, -5, self.pos_x, y)
+    self.body:applyLinearImpulse(0, -conf.BIRD_SPEED, self.pos_x, y)
 	
 end
 

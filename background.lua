@@ -1,8 +1,6 @@
 Background = Core.class(Sprite)
 
 function Background:init()
-	self:addEventListener(Event.ADDED_TO_STAGE, self.onAddedToStage, self)
-	self:addEventListener(Event.REMOVED_FROM_STAGE, self.onRemovedFromStage, self)
 	
 	self.bg_speed = conf.BG_SPEED
 	
@@ -21,6 +19,9 @@ function Background:init()
 		self:addChild(self.background[i])
 		self.background[1]:setPosition((i - 1) * self.bg_width, 0)
 	end
+	
+	self:addEventListener(Event.ADDED_TO_STAGE, self.onAddedToStage, self)
+	self:addEventListener(Event.REMOVED_FROM_STAGE, self.onRemovedFromStage, self)
 end
 
 function Background:onAddedToStage(event)
