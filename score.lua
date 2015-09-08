@@ -1,6 +1,15 @@
 Score = Core.class(Sprite)
 
-function Score:init()
+--[[
+
+	scale
+	level_width
+
+--]]
+function Score:init(options)
+
+	self.scale = options.scale
+	self.level_width = options.level_width
 
 	self.numbers = {
 		Texture.new("assets/images/fonts/big/font_big_0.png"),
@@ -75,15 +84,15 @@ function Score:updateScore(new_score)
 		
 			local num = self.imgs[i]
 			
-			num:setScale(conf.SCORE_SCALE, conf.SCORE_SCALE)
+			num:setScale(self.scale, self.scale)
 			num:setAnchorPoint(0.5, 0.5)
 			
 			if #self.imgs == 1 then
-				self.imgs[i]:setPosition(conf.WIDTH / 2, 100)
+				self.imgs[i]:setPosition(self.level_width / 2, 100)
 			elseif #self.imgs == 2 then
-				self.imgs[i]:setPosition(conf.WIDTH / 2 + math.pow((-1), i) * 0.5 * image_width, 100)
+				self.imgs[i]:setPosition(self.level_width / 2 + math.pow((-1), i) * image_width, 100)
 			elseif #self.imgs == 3 then
-				self.imgs[i]:setPosition(conf.WIDTH / 2 + (i - 2) * image_width, 100)
+				self.imgs[i]:setPosition(self.level_width / 2 + (i - 2) * image_width, 100)
 			end
 			
 			self:addChild(num)

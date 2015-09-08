@@ -3,20 +3,29 @@ Tube = Core.class(Sprite)
 function Tube:init(level)
 	
 	self.level = level
+	
 	self.paused = true
 	
 	self.pipe_texture = Texture.new("assets/images/pipe.png")
-	self.pipe_down_texture = Texture.new("assets/images/pipe-down.png")
-	self.pipe_up_texture = Texture.new("assets/images/pipe-up.png")
+	self.pipe_down = Bitmap.new(Texture.new("assets/images/pipe-down.png"))
+	self.pipe_up = Bitmap.new(Texture.new("assets/images/pipe-up.png"))
 		
 	self.speed = conf.TUBE_SPEED
 	self.stage_width = conf.WIDTH
 	self.stage_height = conf.HEIGHT
 	self.offset = conf.TUBE_OFFSET
 	
-	self.pipe_width = conf.PIPE_SCALE * self.pipe_texture:getWidth()
-	self.pipe_up_and_down_width = conf.PIPE_END_SCALE * self.pipe_down_texture:getWidth()
-	self.pipe_up_and_down_height = conf.PIPE_END_SCALE * self.pipe_down_texture:getHeight()
+	local pipe_scale = conf.PIPE_END_SCALE
+	
+	self.pipe_down:setAnchorPoint(0.5, 0)
+	self.pipe_up:setAnchorPoint(0.5, 0)
+	
+	-- hide pipes from screen
+	self.pipe_down:setPosition(-50, -50)
+	self.pipe_up:setPosition(-50, -50)
+	
+	self.pipe_down:setScale(pipe_scale, pipe_scale)
+	self.pipe_up:setScale(pipe_scale, pipe_scale)
 	
 	self.cur_position = self.stage_width
 	
@@ -30,6 +39,9 @@ function Tube:init(level)
 	--------------
 	
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
+
+	stage:addChild(self.pipe_down)
+	stage:addChild(self.pipe_up)
 	
 end
 
@@ -39,30 +51,25 @@ function Tube:onEnterFrame(event)
 		if self.cur_position then
 
 			-- if tubes hided from screen
-			if self.cur_position > - self.pipe_up_and_down_width / 2 then
+			if self.cur_position > - self.pipe_down:getWidth() / 2 then
 				self.cur_position = self.cur_position - self.speed
-				
 				if self.body_up and self.body_down then
-					self.body_up:setPosition(self.cur_position, (self.pipe__top + self.pipe_up_and_down_height) / 2)
-					local bottom_height = self.stage_height - self.pipe__bottom + self.pipe_up_and_down_height
+					self.body_up:setPosition(self.cur_position, (self.pipe__top + self.pipe_up:getHeight()) / 2)
+					local bottom_height = self.stage_height - self.pipe__bottom + self.pipe_down:getHeight()
 					self.body_down:setPosition(self.cur_position, self.pipe__bottom + bottom_height / 2)
 				else
-					self:setPipesBodies()
 					self:createBody()
+					self:setPipesBodies()
 				end
 			else
-				self.cur_position = self.stage_width + self.pipe_up_and_down_width / 2
+				self.cur_position = self.stage_width + self.pipe_down:getWidth() / 2
 				
 				for i = 1, #self.pipes_up do
-					self:removeChild(self.pipes_up[i])
+					stage:removeChild(self.pipes_up[i])
 				end
 				for i = 1, #self.pipes_down do
-					self:removeChild(self.pipes_down[i])
+					stage:removeChild(self.pipes_down[i])
 				end
-				
-				self:removeChild(self.pipe_down)
-				self:removeChild(self.pipe_up)
-				
 				self.pipes_up, self.pipes_down = {}, {}
 				self.pipe__top, self.pipe__bottom = self:getRandomTubeHeights()
 				
@@ -72,8 +79,7 @@ function Tube:onEnterFrame(event)
 				table.remove(self.level.bodies)
 				table.remove(self.level.bodies)
 				
-				--self:createBody()
-				
+				self:createBody()
 			end
 		
 			self:draw()
@@ -89,18 +95,15 @@ function Tube:draw()
 	
 	for i = 1, self.pipe__top - 1 do
 		self.pipes_up[i]:setPosition(self.cur_position, i)
-		self:addChild(self.pipes_up[i])
+		stage:addChild(self.pipes_up[i])
 	end
 	
-	local down_pipes_length = math.floor(self.pipe__bottom + self.pipe_up_and_down_height )
+	local down_pipes_length = math.floor(self.pipe__bottom + self.pipe_down:getHeight() )
 	
 	for i = 1, down_pipes_length - 1 do
 		self.pipes_down[i]:setPosition(self.cur_position, i + down_pipes_length - 1)
-		self:addChild(self.pipes_down[i])
+		stage:addChild(self.pipes_down[i])
 	end
-	
-	self:addChild(self.pipe_down)
-	self:addChild(self.pipe_up)
 	
 end
 
@@ -120,23 +123,13 @@ function Tube:setPipesBodies()
 		self.pipes_up[i]:setScale(conf.PIPE_SCALE)
 	end
 	
-	local down_pipes_length = math.floor(self.pipe__bottom + self.pipe_up_and_down_height)
+	local down_pipes_length = math.floor(self.pipe__bottom + self.pipe_down:getHeight())
 	
 	for i = 1, down_pipes_length - 1 do
 		self.pipes_down[i] = Bitmap.new(self.pipe_texture)
 		self.pipes_down[i]:setAnchorPoint(0.5, 0)
 		self.pipes_down[i]:setScale(conf.PIPE_SCALE)
 	end
-	
-	
-	self.pipe_up = Bitmap.new(self.pipe_up_texture)
-	self.pipe_down = Bitmap.new(self.pipe_down_texture)
-	
-	self.pipe_down:setAnchorPoint(0.5, 0)
-	self.pipe_up:setAnchorPoint(0.5, 0)
-	
-	self.pipe_down:setScale(conf.PIPE_END_SCALE, conf.PIPE_END_SCALE)
-	self.pipe_up:setScale(conf.PIPE_END_SCALE, conf.PIPE_END_SCALE)
 	
 end
 
@@ -148,9 +141,9 @@ function Tube:createBody()
 	
 	local poly_up = b2.PolygonShape.new()
 	
-	poly_up:setAsBox(self.pipe_up_and_down_width/2, (self.pipe__top + self.pipe_up_and_down_height) / 2)
+	poly_up:setAsBox(self.pipe_up:getWidth()/2, (self.pipe__top + self.pipe_up:getHeight()) / 2)
 	
-	body_up:setPosition(self.cur_position, (self.pipe__top + self.pipe_up_and_down_height) / 2)
+	body_up:setPosition(self.cur_position, (self.pipe__top + self.pipe_up:getHeight()) / 2)
 	body_up:setAngle(math.rad(self:getRotation()))
 		
 	local fixture_up = body_up:createFixture {
@@ -174,8 +167,8 @@ function Tube:createBody()
 	
 	local poly_down = b2.PolygonShape.new()
 	
-	local bottom_height = self.stage_height - self.pipe__bottom + self.pipe_up_and_down_height
-	poly_down:setAsBox(self.pipe_up_and_down_width/2, bottom_height / 2)
+	local bottom_height = self.stage_height - self.pipe__bottom + self.pipe_down:getHeight()
+	poly_down:setAsBox(self.pipe_down:getWidth()/2, bottom_height / 2)
 	
 	body_down:setPosition(self.cur_position, self.pipe__bottom + bottom_height / 2)
 	body_down:setAngle(math.rad(self:getRotation()))

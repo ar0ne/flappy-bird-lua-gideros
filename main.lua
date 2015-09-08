@@ -1,8 +1,9 @@
+require "box2d"
 
-local sceneManager = SceneManager.new({
-	["level"] = level,
+sceneManager = SceneManager.new({
+	["level"] = LevelScene,
 })
 
 stage:addChild(sceneManager)
 
-sceneManager:changeScene("level", conf.transitionTime,  SceneManager.fade)
+sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade)
