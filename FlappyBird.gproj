@@ -1,5 +1,5 @@
 <project>
- <properties fps="60" orientation="0" mouseTouchOrder="0" encryptAssets="0" autorotation="0" architecture="0" windowWidth="0" mouseToTouch="1" windowHeight="0" assetsOnly="0" scaleMode="0" iosDevice="0" android_template="0" logicalHeight="800" win_org="GiderosMobile" osx_domain="giderosmobile.com" packageName="com.yourdomain.yourapp" retinaDisplay="0" logicalWidth="480" touchToMouse="1" osx_org="GiderosMobile" win_domain="giderosmobile.com" encryptCode="0">
+ <properties architecture="0" scaleMode="0" logicalHeight="800" windowWidth="0" iosDevice="0" orientation="0" mouseToTouch="1" autorotation="0" windowHeight="0" android_template="0" fps="60" touchToMouse="1" osx_org="GiderosMobile" osx_domain="giderosmobile.com" mouseTouchOrder="0" assetsOnly="0" win_domain="giderosmobile.com" encryptCode="0" retinaDisplay="0" win_org="GiderosMobile" logicalWidth="480" packageName="com.yourdomain.yourapp" encryptAssets="0">
   <imageScales>
    <scale scale="2" suffix="@2"/>
   </imageScales>
@@ -47,5 +47,4 @@
  <file source="scenemanager.lua"/>
  <file source="score.lua"/>
  <file source="splashscreen.lua"/>
- <file source="tube.lua"/>
 </project>
