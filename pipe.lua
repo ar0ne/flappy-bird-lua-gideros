@@ -11,10 +11,11 @@ Pipe = Core.class(Sprite)
 		pipe_scale 	 	- scale of pipe image 
 		pipe_end_scale	- scale of up and bottom ends of pipes
 		side_offset		- offset from sides
+		player_pos_x  	- position of player
 	}
 --]]
 	
-function Pipe:init( options	)
+function Pipe:init(options)
 
 	self.level 			= options.level
 	self.speed 			= options.speed
@@ -25,6 +26,7 @@ function Pipe:init( options	)
 	self.side_offset 	= options.side_offset
 	self.pipe_end_scale = options.pipe_end_scale
 	self.pipe_scale 	= options.pipe_scale
+	self.player_pos_x 	= options.player_pos_x
 	
 	self.paused = true
 
@@ -211,6 +213,7 @@ function Pipe:onEnterFrame(e)
 		for i = 1, #self.pipes do
 		
 			local x, y = self.pipes[i]:getPosition()
+			
 			self.pipes[i]:setPosition( x - self.speed, y)
 			
 			if x < -self.pipes_end_width / 2 then
@@ -236,6 +239,11 @@ function Pipe:onEnterFrame(e)
 					
 					i = i + 1
 				end
+			end
+			
+			if x >= self.player_pos_x - self.speed / 2 and x <= self.player_pos_x + self.speed/2 and i % 2 ~= 0 then
+				self.level:dispatchEvent(Event.new("pipe_passed"))
+				-- print(x)
 			end
 			
 		end

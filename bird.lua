@@ -33,7 +33,7 @@ function Bird:init(options)
 		anim[i]:setScale(conf.BIRD_SCALE, conf.BIRD_SCALE)
 	end
 	
-	self.radius = anim[1]:getWidth() / 2
+	self.radius = anim[1]:getWidth() * 0.9 / 2
 	
 	self.bird_mc = MovieClip.new{
 		{ 1,  5, anim[1]},
@@ -79,6 +79,9 @@ function Bird:onEnterFrame(event)
 		if y < 0 then
 			self.body:setPosition(x, 0)
 		end	
+		
+		local angle = math.min((vel_y * 0.8 / 10)* 90 , 80)
+		self.body.object:setRotation(angle)
 	end
 	
 end
@@ -92,7 +95,6 @@ function Bird:createBody()
 	}
 		
 	body:setPosition(self:getPosition())
-	--body:setAngle(math.rad(self:getRotation()))
 	
 	local circle = b2.CircleShape.new(0, 0, self.radius)
 	
@@ -116,13 +118,7 @@ function Bird:jump()
 	
 	if not self.paused then
 		local x, y = self.body:getPosition()
-		if y < self.level_height then
-			if y > 100 then
-				self.body:applyLinearImpulse(0, -self.speed, self.pos_x, y)
-			elseif y > 50 then
-				self.body:applyLinearImpulse(0, -self.speed/2, self.pos_x, y)
-			end
-		end
+		self.body:applyLinearImpulse(0, -self.speed, self.pos_x, y)
 	end
 	
 end

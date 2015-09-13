@@ -23,7 +23,7 @@ function LevelScene:init()
 	
 	self.bird = Bird.new{
 		level = self,
-		pos_x = conf.WIDTH / 3,
+		pos_x = conf.BIRD_POS_X,
 		pos_y = conf.HEIGHT / 2,
 		level_height = conf.HEIGHT,
 		speed = conf.BIRD_SPEED
@@ -39,7 +39,8 @@ function LevelScene:init()
 		level_height = 		conf.HEIGHT,
 		pipe_offset = 		conf.PIPE_OFFSET,
 		pipe_scale = 		conf.PIPE_SCALE,	
-		pipe_end_scale = 	conf.PIPE_END_SCALE
+		pipe_end_scale = 	conf.PIPE_END_SCALE,
+		player_pos_x =		conf.BIRD_POS_X
 	})
 	--]]
 	
@@ -63,7 +64,7 @@ function LevelScene:init()
 	self:addChild(self.splashscreen)
 	
 	----- DEBUG ---------
-	-- [[
+	--[[
 	local debugDraw = b2.DebugDraw.new()
 	self.world:setDebugDraw(debugDraw)
 	self:addChild(debugDraw)
@@ -73,8 +74,8 @@ function LevelScene:init()
 	
 	------ EVENTS -------
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
+	self:addEventListener("pipe_passed", self.onPipePassed, self)
 	self.world:addEventListener(Event.BEGIN_CONTACT, self.onBeginContact, self)
-	
 	---------------------
 	
 end
@@ -87,9 +88,6 @@ function LevelScene:onEnterFrame(event)
 		for i = 1, #self.bodies do
 			body = self.bodies[i]
 			body.object:setPosition(body:getPosition())
-			
-			body.object:setRotation(math.deg(body:getAngle()))
-			--body.object:setRotation(math.deg(0))
 		end
 		
 		if self.splashscreen.showed == true then
@@ -99,15 +97,6 @@ function LevelScene:onEnterFrame(event)
 			self.splashscreen.showed = false
 			self.bg.paused = false
 		end
-		
-		-- Increment game score
-		--print(math.floor(self.tube.cur_position))
-		--[[
-		if math.floor(self.tube.cur_position) < conf.WIDTH / 3 + 2 and  math.floor(self.tube.cur_position) > conf.WIDTH / 3 - 1 then
-			self.score:updateScore(self.score:getScore() + 1)
-			self.sounds:play("point")
-		end
-		--]]
 		 
 	end
 end
@@ -121,9 +110,17 @@ function LevelScene:onBeginContact(event)
 	if bodyA.type and bodyB.type then
 		if ((bodyA.type == "player" and bodyB.type == "wall") or
 			(bodyB.type == "player" and bodyA.type == "wall")) then
-			print("Game Over " .. math.random(0, 10))
-			--sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade)
+			self.pipe.paused = true
 			--self.paused = true
+			self.land.paused = true
+			self.bg.paused = true
+			self.bird.paused = true
+			sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade)
 		end
 	end
+end
+
+function LevelScene:onPipePassed(event)
+	-- Increment game score
+	self.score:updateScore(self.score:getScore() + 1)
 end
