@@ -36,7 +36,9 @@ function Land:init(options)
 	self.land_images[1]:setPosition(self.land_width / 2,  self.pos_y)
 	self.land_images[2]:setPosition(self.land_width / 2 + self.land_width, self.pos_y )
 		
-	self:createBody()
+	if self.level.world ~= nil then	
+		self:createBody()
+	end
 	
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
 end

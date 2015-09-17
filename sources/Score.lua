@@ -51,9 +51,6 @@ function Score:getScoreImages(num)
 	return ret	
 end
 
-function Score:getScore()
-	return self.count
-end
 
 function Score:setNewScore(new_score)
 

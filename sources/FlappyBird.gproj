@@ -1,0 +1,70 @@
+<project>
+ <properties assetsOnly="0" touchToMouse="1" packageName="com.yourdomain.yourapp" mouseToTouch="1" encryptCode="0" osx_org="GiderosMobile" osx_domain="giderosmobile.com" iosDevice="0" android_template="0" mouseTouchOrder="0" orientation="0" windowHeight="0" encryptAssets="0" logicalWidth="480" autorotation="0" windowWidth="0" scaleMode="0" win_domain="giderosmobile.com" retinaDisplay="0" architecture="0" fps="60" logicalHeight="800" win_org="GiderosMobile">
+  <imageScales>
+   <scale suffix="@2" scale="2"/>
+  </imageScales>
+ </properties>
+ <folder name="assets">
+  <folder name="sounds">
+   <file source="assets/sounds/sfx_swooshing.mp3"/>
+   <file source="assets/sounds/sfx_point.mp3"/>
+   <file source="assets/sounds/sfx_hit.mp3"/>
+   <file source="assets/sounds/sfx_die.mp3"/>
+  </folder>
+  <folder name="images">
+   <folder name="fonts">
+    <folder name="small">
+     <file source="assets/images/fonts/small/font_small_9.png"/>
+     <file source="assets/images/fonts/small/font_small_8.png"/>
+     <file source="assets/images/fonts/small/font_small_7.png"/>
+     <file source="assets/images/fonts/small/font_small_6.png"/>
+     <file source="assets/images/fonts/small/font_small_5.png"/>
+     <file source="assets/images/fonts/small/font_small_4.png"/>
+     <file source="assets/images/fonts/small/font_small_3.png"/>
+     <file source="assets/images/fonts/small/font_small_2.png"/>
+     <file source="assets/images/fonts/small/font_small_1.png"/>
+     <file source="assets/images/fonts/small/font_small_0.png"/>
+    </folder>
+    <folder name="big">
+     <file source="assets/images/fonts/big/font_big_0.png"/>
+     <file source="assets/images/fonts/big/font_big_1.png"/>
+     <file source="assets/images/fonts/big/font_big_2.png"/>
+     <file source="assets/images/fonts/big/font_big_3.png"/>
+     <file source="assets/images/fonts/big/font_big_4.png"/>
+     <file source="assets/images/fonts/big/font_big_5.png"/>
+     <file source="assets/images/fonts/big/font_big_6.png"/>
+     <file source="assets/images/fonts/big/font_big_7.png"/>
+     <file source="assets/images/fonts/big/font_big_8.png"/>
+     <file source="assets/images/fonts/big/font_big_9.png"/>
+    </folder>
+   </folder>
+   <file source="assets/images/bird.png"/>
+   <file source="assets/images/land.png"/>
+   <file source="assets/images/medal_bronze.png"/>
+   <file source="assets/images/medal_gold.png"/>
+   <file source="assets/images/medal_platinum.png"/>
+   <file source="assets/images/medal_silver.png"/>
+   <file source="assets/images/pipe-up.png"/>
+   <file source="assets/images/pipe.png"/>
+   <file source="assets/images/replay.png"/>
+   <file source="assets/images/scoreboard.png"/>
+   <file source="assets/images/sky.png"/>
+   <file source="assets/images/splash.png"/>
+  </folder>
+ </folder>
+ <file source="Background.lua"/>
+ <file source="Bird.lua"/>
+ <file source="Button.lua"/>
+ <file source="Configs.lua"/>
+ <file source="Easing.lua"/>
+ <file source="FlappyBird.gproj"/>
+ <file source="GameOverScene.lua"/>
+ <file source="Land.lua"/>
+ <file source="LevelScene.lua"/>
+ <file source="MenuScene.lua"/>
+ <file source="Pipe.lua"/>
+ <file source="SceneManager.lua"/>
+ <file source="Score.lua"/>
+ <file source="SplashScreen.lua"/>
+ <file source="main.lua"/>
+</project>

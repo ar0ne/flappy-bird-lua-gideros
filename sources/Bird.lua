@@ -19,6 +19,8 @@ function Bird:init(options)
 	
 	self.paused = true
 	
+	self.swooshing_sound = Sound.new("assets/sounds/sfx_swooshing.mp3")
+	
 	local spritesheet = Texture.new("assets/images/bird.png")
 	
 	local anim = {
@@ -68,19 +70,34 @@ function Bird:onEnterFrame(event)
 		end
 		
 		local vel_x, vel_y = self.body:getLinearVelocity()
-		--print(vel_x, vel_y)
+		--print(vel_y)
 		
-		if vel_y > 10 then
-			self.body:setLinearVelocity(vel_x, 10)
-		elseif vel_y < -10 then
-			self.body:setLinearVelocity(vel_x, -10)
+		if vel_y < -15 then
+			self.body:setLinearVelocity(0, -15 )
+		elseif vel_y > 15 then
+			self.body:setLinearVelocity(0, 15 )
 		end
 		
 		if y < 0 then
 			self.body:setPosition(x, 0)
 		end	
 		
-		local angle = math.min((vel_y * 0.8 / 10)* 90 , 80)
+		local angle = 0
+		
+		if vel_y < 0 then
+			angle = math.min(vel_y / -10, -10)
+		elseif vel_y >= 10 then
+			angle = 90
+		elseif vel_y >= 0 and vel_y < 5 then
+			angle = math.min((vel_y / 10) * 10 , 10)
+		else
+			angle = math.min((vel_y / 10) * 90 , 90)
+		end
+		
+		
+		
+		--print(vel_y .. " " .. angle)
+		
 		self.body.object:setRotation(angle)
 	end
 	
@@ -117,8 +134,26 @@ end
 function Bird:jump()
 	
 	if not self.paused then
+	
+		if self.level.isSoundEnabled then
+			self.swooshing_sound:play()
+		end
+		
 		local x, y = self.body:getPosition()
-		self.body:applyLinearImpulse(0, -self.speed, self.pos_x, y)
+		
+		local _, vel_y = self.body:getLinearVelocity()
+		--print("JUMP " .. vel_y)
+
+		
+		
+		if vel_y < -25 then
+			self.body:setLinearVelocity(0, -15 )
+		elseif vel_y > 10 then
+			self.body:setLinearVelocity(0, -10 )
+		else
+			self.body:applyLinearImpulse(0, -self.speed , self.pos_x, y)
+		end
+
 	end
 	
 end

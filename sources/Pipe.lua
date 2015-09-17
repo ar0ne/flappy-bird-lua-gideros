@@ -29,6 +29,8 @@ function Pipe:init(options)
 	self.player_pos_x 	= options.player_pos_x
 	
 	self.paused = true
+	
+	self.point_sound = Sound.new("assets/sounds/sfx_point.mp3")
 
 	self.pipe__texture = Texture.new("assets/images/pipe.png")
 	
@@ -38,8 +40,8 @@ function Pipe:init(options)
 	}
 	
 	self.pipes_down = {
-		Bitmap.new(Texture.new("assets/images/pipe-down.png")),
-		Bitmap.new(Texture.new("assets/images/pipe-down.png")),
+		Bitmap.new(Texture.new("assets/images/pipe-up.png")),
+		Bitmap.new(Texture.new("assets/images/pipe-up.png")),
 	}
 	
 	for i = 1, #self.pipes_up do
@@ -49,7 +51,7 @@ function Pipe:init(options)
 	
 	for i = 1, #self.pipes_down do
 		self.pipes_down[i]:setAnchorPoint(0.5, 0.5)
-		self.pipes_down[i]:setScale(self.pipe_end_scale, self.pipe_end_scale)
+		self.pipes_down[i]:setScale(self.pipe_end_scale, -self.pipe_end_scale)
 	end
 	
 	self.pipes_end_width  = self.pipes_down[1]:getWidth()
@@ -58,7 +60,9 @@ function Pipe:init(options)
 
 	self.pipes = {}
 	
-	self:createBodies()
+	if self.level.world ~= nil then	
+		self:createBodies()
+	end
 	
 	----- EVENTS --------
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
@@ -243,7 +247,9 @@ function Pipe:onEnterFrame(e)
 			
 			if x >= self.player_pos_x - self.speed / 2 and x <= self.player_pos_x + self.speed/2 and i % 2 ~= 0 then
 				self.level:dispatchEvent(Event.new("pipe_passed"))
-				-- print(x)
+				if self.level.isSoundEnabled then
+					self.point_sound:play()
+				end
 			end
 			
 		end

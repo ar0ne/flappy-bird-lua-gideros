@@ -5,6 +5,9 @@ function LevelScene:init()
 	self.world = b2.World.new(0, conf.GRAVITY, true)
 	self.bodies = {}
 	
+	self.isSoundEnabled = true
+	self.paused = false
+	
 	self.land = Land.new{
 		level = self,
 		speed = conf.LAND_SPEED,
@@ -55,6 +58,8 @@ function LevelScene:init()
 		scale = conf.SPLASHSCREEN_SCALE,
 	}
 	
+	self.die_sound = Sound.new("assets/sounds/sfx_hit.mp3")
+	
 	
 	self:addChild(self.bg)
 	self:addChild(self.land)
@@ -102,25 +107,33 @@ function LevelScene:onEnterFrame(event)
 end
 
 function LevelScene:onBeginContact(event)
-	local fixtureA = event.fixtureA
-	local fixtureB = event.fixtureB
-	local bodyA = fixtureA:getBody()
-	local bodyB = fixtureB:getBody()
+
+	if not self.bird.paused then
 	
-	if bodyA.type and bodyB.type then
-		if ((bodyA.type == "player" and bodyB.type == "wall") or
-			(bodyB.type == "player" and bodyA.type == "wall")) then
-			self.pipe.paused = true
-			--self.paused = true
-			self.land.paused = true
-			self.bg.paused = true
-			self.bird.paused = true
-			sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade)
+		local fixtureA = event.fixtureA
+		local fixtureB = event.fixtureB
+		local bodyA = fixtureA:getBody()
+		local bodyB = fixtureB:getBody()
+		
+		if bodyA.type and bodyB.type then
+			if ((bodyA.type == "player" and bodyB.type == "wall") or
+				(bodyB.type == "player" and bodyA.type == "wall")) then
+				self.pipe.paused = true
+				self.land.paused = true
+				self.bg.paused = true
+				self.bird.paused = true
+				
+				if self.isSoundEnabled then
+					self.die_sound:play()
+				end
+				
+				sceneManager:changeScene("game_over", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {userData = self.score.count})
+			end
 		end
 	end
 end
 
 function LevelScene:onPipePassed(event)
 	-- Increment game score
-	self.score:updateScore(self.score:getScore() + 1)
+	self.score:updateScore(self.score.count + 1)
 end
