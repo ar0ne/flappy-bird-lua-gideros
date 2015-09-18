@@ -32,7 +32,7 @@ function LevelScene:init()
 		speed = conf.BIRD_SPEED
 	}
 	
-	-- [[
+
 	self.pipe = Pipe.new({
 		level = 			self,
 		bottom_offset = 	self.land.land_height,
@@ -45,7 +45,7 @@ function LevelScene:init()
 		pipe_end_scale = 	conf.PIPE_END_SCALE,
 		player_pos_x =		conf.BIRD_POS_X
 	})
-	--]]
+
 	
 	self.score = Score.new{
 		scale 		= conf.SCORE_SCALE,

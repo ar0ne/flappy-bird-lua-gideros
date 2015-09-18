@@ -109,27 +109,21 @@ end
 	@height - height of pipe body
 	@x - position of pipe middle 
 	@isUp - pipes can be from top and bottom
-	@return pipe_fill - array of pipe body sprites
+	@return pipe_fill - 
 --]]
 function Pipe:fillPipe(height, x, isUp)
 
-	local fill_height = math.floor(height - self.pipes_end_height)
-	local pipe_fill = {}
+	local pipe_fill = Bitmap.new(self.pipe__texture)
+	pipe_fill:setAnchorPoint(0.5, 0)
+	pipe_fill:setScale(self.pipe_scale, height - self.pipes_end_height)
 	
-	for i = 1, fill_height do
-		
-		pipe_fill[i] = Bitmap.new(self.pipe__texture)
-		pipe_fill[i]:setAnchorPoint(0.5, 0.5)
-		pipe_fill[i]:setScale(self.pipe_scale, self.pipe_scale)
-		
-		if isUp then
-			pipe_fill[i]:setPosition(x, i)
-		else
-			pipe_fill[i]:setPosition(x, self.level_height - self.bottom_offset - i)
-		end
-		
-		self:addChild(pipe_fill[i])
+	if isUp then
+		pipe_fill:setPosition(x, 0)
+	else
+		pipe_fill:setPosition(x, self.level_height - self.bottom_offset - height + self.pipes_end_height)
 	end
+	
+	self:addChild(pipe_fill)
 	
 	return pipe_fill
 end
@@ -146,12 +140,9 @@ function Pipe:createBodies()
 	self.pipes_down[1]:setPosition(self.level_width * 2, h1 + self.pipe_offset + h2 / 2 - self.pipes_end_height / 2)
 
 	self.pipes_fill = {}
-	
-	for i = 1, 4 do
-		self.pipes_fill[i] = {}
-	end
-	
+		
 	local x, _ = self.pipes[1]:getPosition()
+	
 	self.pipes_fill[1] = self:fillPipe(h1, x, true)
 	self.pipes_fill[2] = self:fillPipe(h2, x, false)
 	
@@ -163,8 +154,8 @@ function Pipe:createBodies()
 	self.pipes_up[2]:setPosition(self.level_width * 2 + self.side_offset, h1 / 2 - self.pipes_end_height / 2)
 	self.pipes_down[2]:setPosition(self.level_width * 2 + self.side_offset, h1 + self.pipe_offset + h2/2 - self.pipes_end_height / 2)
 
-
 	x, _ = self.pipes[3]:getPosition()
+	
 	self.pipes_fill[3] = self:fillPipe(h1, x, true)
 	self.pipes_fill[4] = self:fillPipe(h2, x, false)
 
@@ -186,25 +177,15 @@ function Pipe:movePipes()
 			k_index = 2
 		end
 	
+		local x, y = self.pipes[k]:getPosition()
+		
 		if k % 2 ~= 0 then
-		
-			local x, y = self.pipes[k]:getPosition()
 			self.pipes_up[k_index]:setPosition(x, y * 2 - self.pipes_end_height / 2)
-
-			for i = 1, #self.pipes_fill[k] do
-				self.pipes_fill[k][i]:setPosition(x, i)
-			end
-			
 		else
-		
-			local x, y = self.pipes[k]:getPosition()
 			self.pipes_down[k_index]:setPosition(x, y - self.pipes[k].height + self.pipes_end_height / 2)
-
-			for i = 1, #self.pipes_fill[k] do
-				self.pipes_fill[k][i]:setPosition(x, self.level_height - self.bottom_offset - i)
-			end
-		
 		end
+		
+		self.pipes_fill[k]:setX(x)
 	end
 	
 end
@@ -225,21 +206,19 @@ function Pipe:onEnterFrame(e)
 				if i % 2 ~= 0 then
 				
 					local h1, h2 = self:getRandomHeight()
-					self.pipes[i]   = self:createBody(self.pipes_end_width / 2, h1 / 2, self.side_offset * 2 , h1 / 2)
-					self.pipes[i+1] = self:createBody(self.pipes_end_width / 2, h2 / 2, self.side_offset * 2 , h1 + self.pipe_offset + h2 / 2)
 					
 					-- remove fill from top pipe
-					for j = 1, #self.pipes_fill[i] do
-						self:removeChild(self.pipes_fill[i][j])
-					end
+					self:removeChild(self.pipes_fill[i])
+
 					-- remove fill from bottom pipe
-					for j = 1, #self.pipes_fill[i+1] do
-						self:removeChild(self.pipes_fill[i+1][j])
-					end
+					self:removeChild(self.pipes_fill[i+1])
 					
 					-- fill again
 					self.pipes_fill[i] 	 = self:fillPipe(h1, x, true)
 					self.pipes_fill[i+1] = self:fillPipe(h2, x, false)	
+
+					self.pipes[i]   = self:createBody(self.pipes_end_width / 2, h1 / 2, self.side_offset * 2 , h1 / 2)
+					self.pipes[i+1] = self:createBody(self.pipes_end_width / 2, h2 / 2, self.side_offset * 2 , h1 + self.pipe_offset + h2 / 2)
 					
 					i = i + 1
 				end
