@@ -2,7 +2,9 @@ Button = Core.class(Sprite)
 
 function Button:init(sprite)
 
-	self:addChild(sprite)
+	self.sprite = sprite
+
+	self:addChild(self.sprite)
 	
 	--- EVENTS -----
 	self:addEventListener(Event.MOUSE_DOWN, self.onMouseDown, self)

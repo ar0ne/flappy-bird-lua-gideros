@@ -1,5 +1,5 @@
 <project>
- <properties assetsOnly="0" touchToMouse="1" packageName="com.yourdomain.yourapp" mouseToTouch="1" encryptCode="0" osx_org="GiderosMobile" osx_domain="giderosmobile.com" iosDevice="0" android_template="0" mouseTouchOrder="0" orientation="0" windowHeight="0" encryptAssets="0" logicalWidth="480" autorotation="0" windowWidth="0" scaleMode="0" win_domain="giderosmobile.com" retinaDisplay="0" architecture="0" fps="60" logicalHeight="800" win_org="GiderosMobile">
+ <properties osx_domain="giderosmobile.com" osx_org="GiderosMobile" architecture="0" encryptCode="0" mouseToTouch="1" packageName="com.yourdomain.yourapp" scaleMode="0" logicalWidth="480" retinaDisplay="0" android_template="0" autorotation="0" logicalHeight="800" assetsOnly="0" fps="60" encryptAssets="0" windowHeight="0" touchToMouse="1" win_org="GiderosMobile" win_domain="giderosmobile.com" windowWidth="0" iosDevice="0" mouseTouchOrder="0" orientation="0">
   <imageScales>
    <scale suffix="@2" scale="2"/>
   </imageScales>
@@ -39,16 +39,22 @@
     </folder>
    </folder>
    <file source="assets/images/bird.png"/>
+   <file source="assets/images/button_rate.png"/>
+   <file source="assets/images/button_score.png"/>
    <file source="assets/images/land.png"/>
+   <file source="assets/images/logo.png"/>
    <file source="assets/images/medal_bronze.png"/>
    <file source="assets/images/medal_gold.png"/>
    <file source="assets/images/medal_platinum.png"/>
    <file source="assets/images/medal_silver.png"/>
+   <file source="assets/images/new.png"/>
    <file source="assets/images/pipe-up.png"/>
    <file source="assets/images/pipe.png"/>
    <file source="assets/images/replay.png"/>
    <file source="assets/images/scoreboard.png"/>
    <file source="assets/images/sky.png"/>
+   <file source="assets/images/sound_off.png"/>
+   <file source="assets/images/sound_on.png"/>
    <file source="assets/images/splash.png"/>
   </folder>
  </folder>

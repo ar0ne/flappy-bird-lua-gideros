@@ -8,4 +8,4 @@ sceneManager = SceneManager.new({
 
 stage:addChild(sceneManager)
 
-sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade)
+sceneManager:changeScene("menu", conf.TRANSITION_TIME,  SceneManager.fade)

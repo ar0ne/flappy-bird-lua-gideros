@@ -51,7 +51,6 @@ function Bird:init(options)
 	
 	self:setPosition(options.pos_x, options.pos_y)
 	
-	
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
 	self:addEventListener(Event.MOUSE_DOWN, self.jump, self)
 		
@@ -70,7 +69,6 @@ function Bird:onEnterFrame(event)
 		end
 		
 		local vel_x, vel_y = self.body:getLinearVelocity()
-		--print(vel_y)
 		
 		if vel_y < -15 then
 			self.body:setLinearVelocity(0, -15 )
@@ -93,10 +91,6 @@ function Bird:onEnterFrame(event)
 		else
 			angle = math.min((vel_y / 10) * 90 , 90)
 		end
-		
-		
-		
-		--print(vel_y .. " " .. angle)
 		
 		self.body.object:setRotation(angle)
 	end
@@ -139,20 +133,7 @@ function Bird:jump()
 			self.swooshing_sound:play()
 		end
 		
-		local x, y = self.body:getPosition()
-		
-		local _, vel_y = self.body:getLinearVelocity()
-		--print("JUMP " .. vel_y)
-
-		
-		
-		if vel_y < -25 then
-			self.body:setLinearVelocity(0, -15 )
-		elseif vel_y > 10 then
-			self.body:setLinearVelocity(0, -10 )
-		else
-			self.body:applyLinearImpulse(0, -self.speed , self.pos_x, y)
-		end
+		self.body:setLinearVelocity(0, -self.speed)
 
 	end
 	

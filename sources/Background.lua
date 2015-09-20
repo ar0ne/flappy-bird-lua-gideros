@@ -11,11 +11,11 @@ Background = Core.class(Sprite)
 --]]
 function Background:init(options)
 
-	self.level 		= options.level
-	self.bg_speed 	= options.speed
+	self.level 			= options.level
+	self.bg_speed 		= options.speed
 	self.level_width 	= options.level_width
 	self.level_height 	= options.level_height
-	self.paused 	= true
+	self.paused 		= true
 	
 	-- this image need to edit
 	self.background = {
@@ -44,10 +44,11 @@ function Background:onEnterFrame(event)
 
 	if not self.paused then
 		for i = 1, #self.background do
-			self.background[i]:setPosition(self.background[i]:getX() - self.bg_speed , 0)
-					
+			local pos_x = self.background[i]:getX()
+			self.background[i]:setPosition(pos_x - self.bg_speed , 0)
+			
 			-- if some image hide from screen then replace it
-			if self.background[i]:getX() + self.bg_width < 0  then
+			if pos_x + self.bg_width < 0  then
 				self.background[i]:setX(self.bg_width - 2)
 			end
 		end

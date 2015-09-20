@@ -11,8 +11,8 @@ Land = Core.class(Sprite)
 --]]
 function Land:init(options)
 
-	self.level = options.level
-	
+	self.paused 		= true
+	self.level 			= options.level
 	self.land_speed 	= options.speed
 	self.level_height 	= options.level_height
 	self.level_width 	= options.level_width
@@ -24,7 +24,7 @@ function Land:init(options)
 	
 	for i = 1, #self.land_images do 
 		self.land_images[i]:setScale(options.scale, options.scale)
-		self.land_images[i]:setAnchorPoint(0.5, 0.5)
+		self.land_images[i]:setAnchorPoint(0, 0.5)
 		self:addChild(self.land_images[i])
 	end
 		
@@ -33,8 +33,8 @@ function Land:init(options)
 	
 	self.pos_y = options.level_height - self.land_height/2
 	
-	self.land_images[1]:setPosition(self.land_width / 2,  self.pos_y)
-	self.land_images[2]:setPosition(self.land_width / 2 + self.land_width, self.pos_y )
+	self.land_images[1]:setPosition(0,  self.pos_y)
+	self.land_images[2]:setPosition(self.land_width - 2, self.pos_y )
 		
 	if self.level.world ~= nil then	
 		self:createBody()
@@ -66,11 +66,12 @@ end
 function Land:onEnterFrame(event)
 	if not self.paused then
 		for i = 1, #self.land_images do
-			self.land_images[i]:setPosition(self.land_images[i]:getX() - self.land_speed, self.pos_y)
+			local pos_x = self.land_images[i]:getX()
+			self.land_images[i]:setX(pos_x - self.land_speed)
 			
 			-- if some image hide from screen then replace it
-			if  self.land_images[i]:getX() + self.level_width / 2 < 0  then
-				self.land_images[i]:setX(self.land_width * 1.5)
+			if pos_x + self.land_width < 0  then
+				self.land_images[i]:setX(self.land_width - 10)
 			end
 		end
 	end

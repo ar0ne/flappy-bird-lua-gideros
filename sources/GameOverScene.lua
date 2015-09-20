@@ -2,14 +2,39 @@ GameOverScene = Core.class(Sprite)
 
 --[[
 
-	@params - score from last game round
+	params = {
+		score - score from last game round
+		isSoundEnabled  - flag for sound managment
+	}
 
 --]]
 
 function GameOverScene:init(params)
 	
+	if params ~= nil then
+		if params.score ~= nil and type(params.score) == "number" and params.score > 0 then
+			self.medal_gold = Bitmap.new(Texture.new("assets/images/medal_gold.png"))
+			self.medal_silver = Bitmap.new(Texture.new("assets/images/medal_silver.png"))
+			self.medal_platinum = Bitmap.new(Texture.new("assets/images/medal_platinum.png"))
+			self.score = params.score
+		else
+			self.score = 0
+		end
+		
+		if params.isSoundEnabled ~= nil then
+			self.isSoundEnabled = params.isSoundEnabled
+		else
+			self.isSoundEnabled = true
+		end
+		
+	else 
+		self.score = 0
+		self.isSoundEnabled = true
+	end
+	
+	
+	
 	self.level_width = conf.WIDTH
-
 
 	self.land = Land.new{
 		level = self,
@@ -27,22 +52,32 @@ function GameOverScene:init(params)
 		raw_scale = conf.HEIGHT - self.land.land_height
 	}
 		
-	self:addChild(self.land)
-	self:addChild(self.bg)
-
-	-----------------------
 
 	self.scoreboard = Bitmap.new(Texture.new("assets/images/scoreboard.png"))
 	self.scoreboard:setAnchorPoint(0.5, 0.5)
 	self.scoreboard:setScale(conf.SCOREBOARD_SCALE, conf.SCOREBOARD_SCALE)
 	self.scoreboard:setPosition(conf.WIDTH / 2, conf.HEIGHT / 2)
 	
+	local bottom_button_pos_y = conf.HEIGHT / 2 + self.scoreboard:getHeight() / 3
+	
 	local replay = Bitmap.new(Texture.new("assets/images/replay.png"))
 	replay:setAnchorPoint(0.5, 0.5)
 	replay:setScale(conf.REPLAY_SCALE, conf.REPLAY_SCALE)
 
 	self.replay_button = Button.new(replay)
-	self.replay_button:setPosition(conf.WIDTH / 2 - replay:getWidth() / 2, conf.HEIGHT / 2 + self.scoreboard:getHeight() / 3)
+	self.replay_button:setPosition(conf.WIDTH / 2 - replay:getWidth() / 2, bottom_button_pos_y)
+	
+	self.replay_button:addEventListener("click", function() 
+		sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {userData = {isSoundEnabled = self.isSoundEnabled}})
+	end)
+	
+	local score = Bitmap.new(Texture.new("assets/images/button_score.png"))
+	score:setAnchorPoint(0.5, 0.5)
+	score:setScale(conf.BUTTON_SCORE_SCALE, conf.BUTTON_SCORE_SCALE)
+	
+	self.score_button = Button.new(score)
+	self.score_button:setPosition(conf.WIDTH / 2 + score:getWidth() / 2, bottom_button_pos_y)
+	
 	
 	self.numbers = {
 		Texture.new("assets/images/fonts/small/font_small_0.png"),
@@ -58,24 +93,17 @@ function GameOverScene:init(params)
 	}
 	
 	-----------------------
-	
-	if params ~= nil and type(params) == "number" and params > 0 then
-		self.medal_gold = Bitmap.new(Texture.new("assets/images/medal_gold.png"))
-		self.medal_silver = Bitmap.new(Texture.new("assets/images/medal_silver.png"))
-		self.medal_platinum = Bitmap.new(Texture.new("assets/images/medal_platinum.png"))
-	else
-		params = 0
-	end
-	
+
+
+	self:addChild(self.land)
+	self:addChild(self.bg)
 	self:addChild(self.scoreboard)
 	self:addChild(self.replay_button)
+	self:addChild(self.score_button)
 	
-	--print("SCORE: " .. params)
-	self:showScore(params)
+	self:showScore(self.score)
 	
-	self.replay_button:addEventListener("click", function() 
-		sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic)
-	end)
+	self:addEventListener(Event.KEY_DOWN, self.onKeyDown, self)
 
 end
 
@@ -129,4 +157,12 @@ function GameOverScene:getScoreImages(num)
 	end	
 		
 	return ret	
+end
+
+function GameOverScene:onKeyDown(event)
+	if event.keyCode == KeyCode.BACK then 
+		if application:getDeviceInfo() == "Android" then
+			sceneManager:changeScene("menu", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {userData = {isSoundEnabled = self.isSoundEnabled}})
+		end
+	end
 end

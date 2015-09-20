@@ -1,11 +1,29 @@
 LevelScene = Core.class(Sprite)
 
-function LevelScene:init()
+--[[
+
+	params = {
+		isSoundEnabled 
+	}
+
+--]]
+
+function LevelScene:init(params)
+
+	if params ~= nil then
+		if params.isSoundEnabled ~= nil and type(params.isSoundEnabled) == "boolean" then
+			self.isSoundEnabled = params.isSoundEnabled
+		else
+			self.isSoundEnabled = true
+		end
+		
+	else
+		self.isSoundEnabled = true
+	end
 
 	self.world = b2.World.new(0, conf.GRAVITY, true)
 	self.bodies = {}
 	
-	self.isSoundEnabled = true
 	self.paused = false
 	
 	self.land = Land.new{
@@ -32,7 +50,6 @@ function LevelScene:init()
 		speed = conf.BIRD_SPEED
 	}
 	
-
 	self.pipe = Pipe.new({
 		level = 			self,
 		bottom_offset = 	self.land.land_height,
@@ -59,7 +76,7 @@ function LevelScene:init()
 	}
 	
 	self.die_sound = Sound.new("assets/sounds/sfx_hit.mp3")
-	
+		
 	
 	self:addChild(self.bg)
 	self:addChild(self.land)
@@ -75,11 +92,15 @@ function LevelScene:init()
 	self:addChild(debugDraw)
 	--]]
 	---------------------
+	
+	self.bg.paused = false
+	self.land.paused = false
 
 	
 	------ EVENTS -------
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
 	self:addEventListener("pipe_passed", self.onPipePassed, self)
+	self:addEventListener(Event.KEY_DOWN, self.onKeyDown, self)
 	self.world:addEventListener(Event.BEGIN_CONTACT, self.onBeginContact, self)
 	---------------------
 	
@@ -100,7 +121,6 @@ function LevelScene:onEnterFrame(event)
 			self.bird.paused = false
 			self.bird:createBody()
 			self.splashscreen.showed = false
-			self.bg.paused = false
 		end
 		 
 	end
@@ -127,7 +147,12 @@ function LevelScene:onBeginContact(event)
 					self.die_sound:play()
 				end
 				
-				sceneManager:changeScene("game_over", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {userData = self.score.count})
+				sceneManager:changeScene("game_over", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {
+					userData = {
+						score 			= self.score.count, 
+						isSoundEnabled 	= self.isSoundEnabled
+					}
+				})
 			end
 		end
 	end
@@ -136,4 +161,16 @@ end
 function LevelScene:onPipePassed(event)
 	-- Increment game score
 	self.score:updateScore(self.score.count + 1)
+end
+
+function LevelScene:onKeyDown(event)
+	if event.keyCode == KeyCode.BACK then 
+		if application:getDeviceInfo() == "Android" then
+			sceneManager:changeScene("menu", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {
+				userData = {
+					isSoundEnabled = self.isSoundEnabled
+				}
+			})
+		end
+	end
 end
