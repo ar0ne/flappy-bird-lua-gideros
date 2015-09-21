@@ -30,9 +30,11 @@ function Bird:init(options)
 		Bitmap.new(TextureRegion.new(spritesheet, 0, 72, 34, 24)),
 	}
 		
+	local scale = conf.BIRD_SCALE / anim[1]:getWidth()	
+	
 	for i = 1, #anim do
 		anim[i]:setAnchorPoint(0.5, 0.5)
-		anim[i]:setScale(conf.BIRD_SCALE, conf.BIRD_SCALE)
+		anim[i]:setScale(scale, scale)
 	end
 	
 	self.radius = anim[1]:getWidth() * 0.9 / 2

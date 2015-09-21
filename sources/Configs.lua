@@ -1,36 +1,46 @@
 
-local W = application:getContentWidth()
-local H = application:getContentHeight()
+local W = application:getDeviceWidth()
+local H = application:getDeviceHeight()
 
 conf = {
 
-	HEIGHT = H,
-	WIDTH = W,
-	TRANSITION_TIME = 1,
 	-- TRANSITION = SceneManager.fade,
-	BG_SPEED = 1.2,
-	PIPE_SPEED = 4.4,
-	PIPE_OFFSET = 150,
-	PIPE_SCALE = 1.8,
-	PIPE_END_SCALE = 2.0,
-	PIPE_SIDE_OFFSET = W * 0.7,
-	BIRD_SPEED = 35,
-	BIRD_SCALE = 1.6,
-	BIRD_POS_X = W / 3,
-	GRAVITY = 60,
-	LAND_SPEED = 4.4,
-	LAND_SCALE = 1.5,
-	SCORE_SCALE = 1.5,
-	SPLASHSCREEN_SCALE = 1.6,
+
+	HEIGHT 				= H,
+	WIDTH 				= W,
+	TRANSITION_TIME 	= 1,
 	
-	SCOREBOARD_SCALE = 1.7,
-	REPLAY_SCALE = 1.5,
-	GAME_OVER_NUMBER_SCALE = 2.2,
+	BG_SPEED 			= 1.2,
+	PIPE_SPEED 			= 4.4,
+	BIRD_SPEED 			= 0.1  * H,
+	GRAVITY 			= 0.075 * H,
+	LAND_SPEED 			= 4.4,
 	
-	LOGO_SCALE = 2,
-	BUTTON_RATE_SCALE = 1.5,
-	BUTTON_SCORE_SCALE = 1.5,
-	SOUND_ON_OFF_SCALE = 0.5,
+	PIPE_OFFSET 		= 0.17 * H,
+	
+	PIPE_SCALE 			= 0.15 * W,
+	PIPE_END_SCALE 		= 0.16 * W,
+	PIPE_SIDE_OFFSET 	= 0.7  * W,
+	
+	
+	BIRD_SCALE 			= 0.12 * W,
+	
+	BIRD_POS_X 			= W / 3,
+	
+	LAND_SCALE 			= 0.2  * H,
+	SCORE_SCALE 		= 0.07 * W,
+	
+	SPLASHSCREEN_SCALE 	= 0.7 * W,
+	
+	SCOREBOARD_SCALE 	= 0.8 * W,
+	REPLAY_SCALE 		= 0.3 * W,
+	
+	GAME_OVER_NUMBER_SCALE = 0.035 * H,
+	
+	LOGO_SCALE 			= 0.8  * W,
+	BUTTON_RATE_SCALE 	= 0.18 * W,
+	BUTTON_SCORE_SCALE 	= 0.3  * W,
+	SOUND_ON_OFF_SCALE 	= 0.15 * W,
 
 
 }

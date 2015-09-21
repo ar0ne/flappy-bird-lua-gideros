@@ -76,12 +76,13 @@ function Score:updateScore(new_score)
 		self.imgs = self:getScoreImages(new_score)
 		
 		local image_width = self.numbers[1]:getWidth()
+		local scale = self.scale / image_width
 		
 		for i = 1, #self.imgs do
 		
 			local num = self.imgs[i]
 			
-			num:setScale(self.scale, self.scale)
+			num:setScale(scale, scale)
 			num:setAnchorPoint(0.5, 0.5)
 			
 			if #self.imgs == 1 then

@@ -13,7 +13,9 @@ function Splashscreen:init(options)
 	self.splash_image = Bitmap.new(Texture.new("assets/images/splash.png"))
 	self.splash_image:setAnchorPoint(0.5, 0.5)
 	self.splash_image:setPosition(options.pos_x, options.pos_y)
-	self.splash_image:setScale(options.scale, options.scale)
+	
+	local scale = options.scale / self.splash_image:getWidth()
+	self.splash_image:setScale(scale, scale)
 
 	self:addChild(self.splash_image)
 	self:addEventListener(Event.MOUSE_DOWN, self.hide, self)

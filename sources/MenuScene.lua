@@ -24,7 +24,8 @@ function MenuScene:init(params)
 
 	self.logo = Bitmap.new(Texture.new("assets/images/logo.png"))
 	self.logo:setAnchorPoint(0.5, 0.5)
-	self.logo:setScale(conf.LOGO_SCALE, conf.LOGO_SCALE)
+	local logo_scale = conf.LOGO_SCALE / self.logo:getWidth()
+	self.logo:setScale(logo_scale, logo_scale)
 	self.logo:setPosition(conf.WIDTH / 2, conf.HEIGHT / 4)
 	
 	self.level_width = conf.WIDTH
@@ -47,7 +48,8 @@ function MenuScene:init(params)
 		
 	local rate = Bitmap.new(Texture.new("assets/images/button_rate.png"))
 	rate:setAnchorPoint(0.5, 0.5)
-	rate:setScale(conf.BUTTON_RATE_SCALE, conf.BUTTON_RATE_SCALE)
+	local rate_scale = conf.BUTTON_RATE_SCALE / rate:getWidth()
+	rate:setScale(rate_scale, rate_scale)
 	
 	self.rate_button = Button.new(rate)
 	self.rate_button:setPosition(conf.WIDTH / 2, conf.HEIGHT / 4 + self.rate_button:getHeight() * 2)
@@ -61,10 +63,12 @@ function MenuScene:init(params)
 	
 	local play = Bitmap.new(Texture.new("assets/images/replay.png"))
 	play:setAnchorPoint(0.5, 0.5)
-	play:setScale(conf.REPLAY_SCALE, conf.REPLAY_SCALE)
+	
+	local play_scale = conf.REPLAY_SCALE / play:getWidth()
+	play:setScale(play_scale, play_scale)
 
 	self.play_button = Button.new(play)
-	self.play_button:setPosition(conf.WIDTH / 2 - play:getWidth() / 2, bottom_button_pos_y)
+	self.play_button:setPosition(conf.WIDTH / 2 - play:getWidth() * 3 / 4, bottom_button_pos_y)
 	
 	self.play_button:addEventListener("click", function() 
 		sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {
@@ -78,10 +82,11 @@ function MenuScene:init(params)
 	
 	local score = Bitmap.new(Texture.new("assets/images/button_score.png"))
 	score:setAnchorPoint(0.5, 0.5)
-	score:setScale(conf.BUTTON_SCORE_SCALE, conf.BUTTON_SCORE_SCALE)
+	local button_score_scale = conf.BUTTON_SCORE_SCALE / score:getWidth()
+	score:setScale(button_score_scale, button_score_scale)
 	
 	self.score_button = Button.new(score)
-	self.score_button:setPosition(conf.WIDTH / 2 + score:getWidth() / 2, bottom_button_pos_y)
+	self.score_button:setPosition(conf.WIDTH / 2 + score:getWidth() * 3 / 4, bottom_button_pos_y)
 	
 	self.score_button:addEventListener("click", function() 
 		-- @TODO: load best score from server and open Scoreboard scene
@@ -99,11 +104,13 @@ function MenuScene:init(params)
 	
 	self.on = Bitmap.new(Texture.new("assets/images/sound_on.png"))
 	self.on:setAnchorPoint(0.5, 0.5)
-	self.on:setScale(conf.SOUND_ON_OFF_SCALE, conf.SOUND_ON_OFF_SCALE)
+	local sound_on_off_scale = conf.SOUND_ON_OFF_SCALE / self.on:getWidth()
+	
+	self.on:setScale(sound_on_off_scale, sound_on_off_scale)
 	
 	self.off = Bitmap.new(Texture.new("assets/images/sound_off.png"))
 	self.off:setAnchorPoint(0.5, 0.5)
-	self.off:setScale(conf.SOUND_ON_OFF_SCALE, conf.SOUND_ON_OFF_SCALE)
+	self.off:setScale(sound_on_off_scale, sound_on_off_scale)
 	
 	self.sound_button = nil	
 	if self.isSoundEnabled then

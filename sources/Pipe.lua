@@ -24,7 +24,6 @@ function Pipe:init(options)
 	self.level_height 	= options.level_height
 	self.pipe_offset 	= options.pipe_offset
 	self.side_offset 	= options.side_offset
-	self.pipe_end_scale = options.pipe_end_scale
 	self.pipe_scale 	= options.pipe_scale
 	self.player_pos_x 	= options.player_pos_x
 	
@@ -43,6 +42,8 @@ function Pipe:init(options)
 		Bitmap.new(Texture.new("assets/images/pipe-up.png")),
 		Bitmap.new(Texture.new("assets/images/pipe-up.png")),
 	}
+	
+	self.pipe_end_scale = options.pipe_end_scale / self.pipes_up[1]:getWidth()
 	
 	for i = 1, #self.pipes_up do
 		self.pipes_up[i]:setAnchorPoint(0.5, 0.5)
@@ -115,7 +116,8 @@ function Pipe:fillPipe(height, x, isUp)
 
 	local pipe_fill = Bitmap.new(self.pipe__texture)
 	pipe_fill:setAnchorPoint(0.5, 0)
-	pipe_fill:setScale(self.pipe_scale, height - self.pipes_end_height)
+	local pipe_scale = self.pipe_scale / pipe_fill:getWidth()
+	pipe_fill:setScale(pipe_scale, height - self.pipes_end_height)
 	
 	if isUp then
 		pipe_fill:setPosition(x, 0)

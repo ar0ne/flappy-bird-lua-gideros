@@ -55,28 +55,35 @@ function GameOverScene:init(params)
 
 	self.scoreboard = Bitmap.new(Texture.new("assets/images/scoreboard.png"))
 	self.scoreboard:setAnchorPoint(0.5, 0.5)
-	self.scoreboard:setScale(conf.SCOREBOARD_SCALE, conf.SCOREBOARD_SCALE)
+	local scoreboard_scale = conf.SCOREBOARD_SCALE / self.scoreboard:getWidth()
+	self.scoreboard:setScale(scoreboard_scale, scoreboard_scale)
 	self.scoreboard:setPosition(conf.WIDTH / 2, conf.HEIGHT / 2)
 	
-	local bottom_button_pos_y = conf.HEIGHT / 2 + self.scoreboard:getHeight() / 3
+	local bottom_buttons_pos_y = conf.HEIGHT / 2 + self.scoreboard:getHeight() / 3
 	
 	local replay = Bitmap.new(Texture.new("assets/images/replay.png"))
 	replay:setAnchorPoint(0.5, 0.5)
-	replay:setScale(conf.REPLAY_SCALE, conf.REPLAY_SCALE)
+	local replay_scale = conf.REPLAY_SCALE / replay:getWidth()
+	replay:setScale(replay_scale, replay_scale)
 
 	self.replay_button = Button.new(replay)
-	self.replay_button:setPosition(conf.WIDTH / 2 - replay:getWidth() / 2, bottom_button_pos_y)
+	self.replay_button:setPosition(conf.WIDTH / 2 - self.scoreboard:getWidth() / 2 + replay:getWidth() / 2, bottom_buttons_pos_y)
 	
 	self.replay_button:addEventListener("click", function() 
-		sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {userData = {isSoundEnabled = self.isSoundEnabled}})
+		sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {
+			userData = {
+				isSoundEnabled = self.isSoundEnabled
+			}
+		})
 	end)
 	
 	local score = Bitmap.new(Texture.new("assets/images/button_score.png"))
 	score:setAnchorPoint(0.5, 0.5)
-	score:setScale(conf.BUTTON_SCORE_SCALE, conf.BUTTON_SCORE_SCALE)
+	local button_score_scale = conf.BUTTON_SCORE_SCALE / score:getWidth()
+	score:setScale(button_score_scale, button_score_scale)
 	
 	self.score_button = Button.new(score)
-	self.score_button:setPosition(conf.WIDTH / 2 + score:getWidth() / 2, bottom_button_pos_y)
+	self.score_button:setPosition(conf.WIDTH / 2 + self.scoreboard:getWidth() / 2 - score:getWidth() / 2, bottom_buttons_pos_y)
 	
 	
 	self.numbers = {
@@ -112,7 +119,7 @@ function GameOverScene:showScore(score)
 	local score_imgs = {}
 	score_imgs = self:getScoreImages(score)
 	
-	local number_scale = conf.GAME_OVER_NUMBER_SCALE
+	local number_scale = conf.GAME_OVER_NUMBER_SCALE / score_imgs[1]:getWidth()
 	
 	local pos_y = conf.HEIGHT / 2 - score_imgs[1]:getHeight() * 3
 	

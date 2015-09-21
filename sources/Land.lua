@@ -20,10 +20,12 @@ function Land:init(options)
 	self.land_images = {
 		Bitmap.new(Texture.new("assets/images/land.png")),
 		Bitmap.new(Texture.new("assets/images/land.png")),
+		Bitmap.new(Texture.new("assets/images/land.png")),
 	}
+	self.scale = options.scale / self.land_images[1]:getHeight()
 	
 	for i = 1, #self.land_images do 
-		self.land_images[i]:setScale(options.scale, options.scale)
+		self.land_images[i]:setScale(self.scale, self.scale)
 		self.land_images[i]:setAnchorPoint(0, 0.5)
 		self:addChild(self.land_images[i])
 	end
@@ -35,6 +37,7 @@ function Land:init(options)
 	
 	self.land_images[1]:setPosition(0,  self.pos_y)
 	self.land_images[2]:setPosition(self.land_width - 2, self.pos_y )
+	self.land_images[3]:setPosition(2 * self.land_width - 4, self.pos_y )
 		
 	if self.level.world ~= nil then	
 		self:createBody()
@@ -71,7 +74,7 @@ function Land:onEnterFrame(event)
 			
 			-- if some image hide from screen then replace it
 			if pos_x + self.land_width < 0  then
-				self.land_images[i]:setX(self.land_width - 10)
+				self.land_images[i]:setX(2 * self.land_width - 16 )
 			end
 		end
 	end

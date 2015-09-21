@@ -24,55 +24,55 @@ function LevelScene:init(params)
 	self.world = b2.World.new(0, conf.GRAVITY, true)
 	self.bodies = {}
 	
-	self.paused = false
+	self.paused = true
 	
 	self.land = Land.new{
-		level = self,
-		speed = conf.LAND_SPEED,
-		scale = conf.LAND_SCALE,
-		level_height = conf.HEIGHT,
-		level_width = conf.WIDTH,
+		level 			= self,
+		speed 			= conf.LAND_SPEED,
+		scale 			= conf.LAND_SCALE,
+		level_height 	= conf.HEIGHT,
+		level_width 	= conf.WIDTH,
 	}
 	
 	self.bg   = Background.new{
-		level = self,
-		speed = conf.BG_SPEED,
-		level_height = conf.HEIGHT,
-		level_width = conf.WIDTH,
-		raw_scale = conf.HEIGHT - self.land.land_height
+		level 			= self,
+		speed 			= conf.BG_SPEED,
+		level_height 	= conf.HEIGHT,
+		level_width 	= conf.WIDTH,
+		raw_scale 		= conf.HEIGHT - self.land.land_height
 	}
 	
 	self.bird = Bird.new{
-		level = self,
-		pos_x = conf.BIRD_POS_X,
-		pos_y = conf.HEIGHT / 2,
-		level_height = conf.HEIGHT,
-		speed = conf.BIRD_SPEED
+		level 			= self,
+		pos_x 			= conf.BIRD_POS_X,
+		pos_y 			= conf.HEIGHT / 2,
+		level_height 	= conf.HEIGHT,
+		speed 			= conf.BIRD_SPEED
 	}
 	
-	self.pipe = Pipe.new({
-		level = 			self,
-		bottom_offset = 	self.land.land_height,
-		side_offset =		conf.PIPE_SIDE_OFFSET,
-		speed = 			conf.PIPE_SPEED,
-		level_width = 		conf.WIDTH,
-		level_height = 		conf.HEIGHT,
-		pipe_offset = 		conf.PIPE_OFFSET,
-		pipe_scale = 		conf.PIPE_SCALE,	
-		pipe_end_scale = 	conf.PIPE_END_SCALE,
-		player_pos_x =		conf.BIRD_POS_X
-	})
+	self.pipe = Pipe.new{
+		level 			= self,
+		bottom_offset 	= self.land.land_height,
+		side_offset 	= conf.PIPE_SIDE_OFFSET,
+		speed 			= conf.PIPE_SPEED,
+		level_width 	= conf.WIDTH,
+		level_height 	= conf.HEIGHT,
+		pipe_offset 	= conf.PIPE_OFFSET,
+		pipe_scale 		= conf.PIPE_SCALE,	
+		pipe_end_scale 	= conf.PIPE_END_SCALE,
+		player_pos_x 	= conf.BIRD_POS_X
+	}
 
 	
 	self.score = Score.new{
-		scale 		= conf.SCORE_SCALE,
-		level_width = conf.WIDTH
+		scale 			= conf.SCORE_SCALE,
+		level_width 	= conf.WIDTH
 	}
 	
 	self.splashscreen = Splashscreen.new{
-		pos_x = conf.WIDTH / 2,
-		pos_y = conf.HEIGHT / 2,
-		scale = conf.SPLASHSCREEN_SCALE,
+		pos_x 		= conf.WIDTH / 2,
+		pos_y 		= conf.HEIGHT / 2,
+		scale 		= conf.SPLASHSCREEN_SCALE,
 	}
 	
 	self.die_sound = Sound.new("assets/sounds/sfx_hit.mp3")
@@ -109,20 +109,21 @@ end
 function LevelScene:onEnterFrame(event)
 
 	if not self.paused then
+				
 		self.world:step(1/60, 8, 3)
-		local body
 		for i = 1, #self.bodies do
-			body = self.bodies[i]
+			local body = self.bodies[i]
 			body.object:setPosition(body:getPosition())
 		end
 		
+	else 
 		if self.splashscreen.showed == true then
+			self.bird:createBody()
 			self.pipe.paused = false
 			self.bird.paused = false
-			self.bird:createBody()
 			self.splashscreen.showed = false
+			self.paused = false
 		end
-		 
 	end
 end
 
