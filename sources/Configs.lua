@@ -22,7 +22,6 @@ conf = {
 	PIPE_END_SCALE 		= 0.16 * W,
 	PIPE_SIDE_OFFSET 	= 0.7  * W,
 	
-	
 	BIRD_SCALE 			= 0.12 * W,
 	
 	BIRD_POS_X 			= W / 3,
@@ -42,5 +41,6 @@ conf = {
 	BUTTON_SCORE_SCALE 	= 0.3  * W,
 	SOUND_ON_OFF_SCALE 	= 0.15 * W,
 
+	MEDAL_SCALE 		= 0.19  * W,
 
 }

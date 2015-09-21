@@ -1,5 +1,5 @@
 <project>
- <properties touchToMouse="1" android_template="0" encryptAssets="0" packageName="com.yourdomain.yourapp" osx_org="GiderosMobile" logicalHeight="800" osx_domain="giderosmobile.com" orientation="0" logicalWidth="480" windowWidth="0" retinaDisplay="0" windowHeight="0" architecture="0" encryptCode="0" assetsOnly="0" autorotation="0" iosDevice="0" win_org="GiderosMobile" win_domain="giderosmobile.com" mouseTouchOrder="0" mouseToTouch="1" fps="60" scaleMode="0">
+ <properties assetsOnly="0" iosDevice="0" encryptAssets="0" osx_org="GiderosMobile" win_domain="giderosmobile.com" architecture="0" retinaDisplay="0" autorotation="0" win_org="GiderosMobile" logicalHeight="800" encryptCode="0" logicalWidth="480" osx_domain="giderosmobile.com" windowHeight="0" mouseToTouch="1" touchToMouse="1" android_template="0" mouseTouchOrder="0" packageName="com.yourdomain.yourapp" windowWidth="0" orientation="0" fps="60" scaleMode="0">
   <imageScales>
    <scale suffix="@2" scale="2"/>
   </imageScales>
@@ -43,10 +43,7 @@
    <file source="assets/images/button_score.png"/>
    <file source="assets/images/land.png"/>
    <file source="assets/images/logo.png"/>
-   <file source="assets/images/medal_bronze.png"/>
    <file source="assets/images/medal_gold.png"/>
-   <file source="assets/images/medal_platinum.png"/>
-   <file source="assets/images/medal_silver.png"/>
    <file source="assets/images/new.png"/>
    <file source="assets/images/pipe-up.png"/>
    <file source="assets/images/pipe.png"/>
@@ -72,5 +69,6 @@
  <file source="SceneManager.lua"/>
  <file source="Score.lua"/>
  <file source="SplashScreen.lua"/>
+ <file source="Utils.lua"/>
  <file source="main.lua"/>
 </project>

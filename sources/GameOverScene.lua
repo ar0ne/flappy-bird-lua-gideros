@@ -5,6 +5,7 @@ GameOverScene = Core.class(Sprite)
 	params = {
 		score - score from last game round
 		isSoundEnabled  - flag for sound managment
+		best_score 
 	}
 
 --]]
@@ -13,9 +14,6 @@ function GameOverScene:init(params)
 	
 	if params ~= nil then
 		if params.score ~= nil and type(params.score) == "number" and params.score > 0 then
-			self.medal_gold = Bitmap.new(Texture.new("assets/images/medal_gold.png"))
-			self.medal_silver = Bitmap.new(Texture.new("assets/images/medal_silver.png"))
-			self.medal_platinum = Bitmap.new(Texture.new("assets/images/medal_platinum.png"))
 			self.score = params.score
 		else
 			self.score = 0
@@ -27,9 +25,18 @@ function GameOverScene:init(params)
 			self.isSoundEnabled = true
 		end
 		
+		if params.best_score ~= nil then
+			local util = Utils.new()
+			self.best_score = params.best_score
+		else
+			self.best_score = util.readBestScoreFromFile()
+		end
+		
 	else 
 		self.score = 0
 		self.isSoundEnabled = true
+		local util = Utils.new()
+		self.best_score = util.readBestScoreFromFile()
 	end
 	
 	
@@ -72,7 +79,8 @@ function GameOverScene:init(params)
 	self.replay_button:addEventListener("click", function() 
 		sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {
 			userData = {
-				isSoundEnabled = self.isSoundEnabled
+				isSoundEnabled = self.isSoundEnabled,
+				best_score = self.best_score
 			}
 		})
 	end)
@@ -107,22 +115,36 @@ function GameOverScene:init(params)
 	self:addChild(self.scoreboard)
 	self:addChild(self.replay_button)
 	self:addChild(self.score_button)
+		
+	self:showScore(self.score, conf.HEIGHT / 2 - self.numbers[1]:getHeight() * 3)
 	
-	self:showScore(self.score)
+	self:showScore(self.best_score, conf.HEIGHT / 2 + self.numbers[1]:getHeight() * 2)
+	
+	if self.score > self.best_score then
+		local util = Utils.new()
+		util.writeBestScoreToFile(self.score)
+		local medal_gold = Bitmap.new(Texture.new("assets/images/medal_gold.png"))
+		medal_gold:setAnchorPoint(0.5, 0.5)
+		local medal_scale = conf.MEDAL_SCALE / medal_gold:getWidth()
+		medal_gold:setScale(medal_scale, medal_scale)
+		medal_gold:setPosition(conf.WIDTH / 2 - self.scoreboard:getWidth() / 2 + medal_gold:getWidth(), conf.HEIGHT / 2)
+		self:addChild(medal_gold)
+		
+		self.best_score = self.score
+	end
+	
 	
 	self:addEventListener(Event.KEY_DOWN, self.onKeyDown, self)
 
 end
 
-function GameOverScene:showScore(score)
+function GameOverScene:showScore(score, pos_y)
 	
 	local score_imgs = {}
 	score_imgs = self:getScoreImages(score)
 	
 	local number_scale = conf.GAME_OVER_NUMBER_SCALE / score_imgs[1]:getWidth()
-	
-	local pos_y = conf.HEIGHT / 2 - score_imgs[1]:getHeight() * 3
-	
+		
 	local image_width = self.numbers[1]:getWidth()
 	
 	for i = 1, #score_imgs do
@@ -169,7 +191,11 @@ end
 function GameOverScene:onKeyDown(event)
 	if event.keyCode == KeyCode.BACK then 
 		if application:getDeviceInfo() == "Android" then
-			sceneManager:changeScene("menu", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {userData = {isSoundEnabled = self.isSoundEnabled}})
+			sceneManager:changeScene("menu", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {
+				userData = {
+					isSoundEnabled = self.isSoundEnabled
+				}
+			})
 		end
 	end
 end

@@ -4,6 +4,7 @@ LevelScene = Core.class(Sprite)
 
 	params = {
 		isSoundEnabled 
+		best_score
 	}
 
 --]]
@@ -17,8 +18,18 @@ function LevelScene:init(params)
 			self.isSoundEnabled = true
 		end
 		
+		local util = Utils.new()
+		if params.best_score ~= nil then
+			
+			self.best_score = params.best_score
+		else
+			self.best_score = util.readBestScoreFromFile()
+		end
+		
 	else
 		self.isSoundEnabled = true
+		local util = Utils.new()
+		self.best_score = util.readBestScoreFromFile()
 	end
 
 	self.world = b2.World.new(0, conf.GRAVITY, true)
@@ -151,7 +162,8 @@ function LevelScene:onBeginContact(event)
 				sceneManager:changeScene("game_over", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {
 					userData = {
 						score 			= self.score.count, 
-						isSoundEnabled 	= self.isSoundEnabled
+						isSoundEnabled 	= self.isSoundEnabled,
+						best_score 		= self.best_score,
 					}
 				})
 			end
