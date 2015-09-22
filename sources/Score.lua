@@ -69,7 +69,6 @@ function Score:updateScore(new_score)
 	
 		for i = 1, #self.imgs do
 			self:removeChild(self.imgs[i])
-			
 		end
 		
 		self.imgs = {}

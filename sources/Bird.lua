@@ -37,7 +37,7 @@ function Bird:init(options)
 		anim[i]:setScale(scale, scale)
 	end
 	
-	self.radius = anim[1]:getWidth() * 0.9 / 2
+	self.radius = anim[1]:getWidth() * 0.45
 	
 	self.bird_mc = MovieClip.new{
 		{ 1,  5, anim[1]},
@@ -54,7 +54,7 @@ function Bird:init(options)
 	self:setPosition(options.pos_x, options.pos_y)
 	
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
-	self:addEventListener(Event.MOUSE_DOWN, self.jump, self)
+	self:addEventListener(Event.MOUSE_DOWN, self.onMouseDown, self)
 		
 end
 
@@ -100,7 +100,6 @@ function Bird:onEnterFrame(event)
 end
 
 
--- [[
 function Bird:createBody()
 
 	local body = self.level.world:createBody{
@@ -122,21 +121,20 @@ function Bird:createBody()
 	self.body = body
 	body.object = self
 	
-	table.insert(self.level.bodies, body)
 end
 
---]]
 
-function Bird:jump()
+function Bird:onMouseDown(event)
 	
 	if not self.paused then
-	
+		event:stopPropagation()
+		
 		if self.level.isSoundEnabled then
 			self.swooshing_sound:play()
 		end
 		
 		self.body:setLinearVelocity(0, -self.speed)
-
+		
 	end
 	
 end

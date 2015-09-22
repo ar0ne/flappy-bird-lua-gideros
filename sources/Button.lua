@@ -8,7 +8,7 @@ function Button:init(sprite)
 	
 	--- EVENTS -----
 	self:addEventListener(Event.MOUSE_DOWN, self.onMouseDown, self)
-	self:addEventListener(Event.MOUSE_UP, self.onMouseUp, self)
+	--self:addEventListener(Event.MOUSE_UP, self.onMouseUp, self)
 	
 end
 

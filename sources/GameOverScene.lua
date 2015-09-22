@@ -12,6 +12,8 @@ GameOverScene = Core.class(Sprite)
 
 function GameOverScene:init(params)
 	
+	local util = Utils.new()
+	
 	if params ~= nil then
 		if params.score ~= nil and type(params.score) == "number" and params.score > 0 then
 			self.score = params.score
@@ -26,7 +28,6 @@ function GameOverScene:init(params)
 		end
 		
 		if params.best_score ~= nil then
-			local util = Utils.new()
 			self.best_score = params.best_score
 		else
 			self.best_score = util.readBestScoreFromFile()
@@ -35,28 +36,27 @@ function GameOverScene:init(params)
 	else 
 		self.score = 0
 		self.isSoundEnabled = true
-		local util = Utils.new()
 		self.best_score = util.readBestScoreFromFile()
 	end
 	
-	
+	print(self.score .. " | " .. self.best_score)
 	
 	self.level_width = conf.WIDTH
 
 	self.land = Land.new{
-		level = self,
-		speed = conf.LAND_SPEED,
-		scale = conf.LAND_SCALE,
-		level_height = conf.HEIGHT,
-		level_width = conf.WIDTH,
+		level 			= self,
+		speed 			= conf.LAND_SPEED,
+		scale 			= conf.LAND_SCALE,
+		level_height 	= conf.HEIGHT,
+		level_width 	= conf.WIDTH,
 	}
 	
 	self.bg   = Background.new{
-		level = self,
-		speed = conf.BG_SPEED,
-		level_height = conf.HEIGHT,
-		level_width = conf.WIDTH,
-		raw_scale = conf.HEIGHT - self.land.land_height
+		level 			= self,
+		speed 			= conf.BG_SPEED,
+		level_height 	= conf.HEIGHT,
+		level_width 	= conf.WIDTH,
+		raw_scale 		= conf.HEIGHT - self.land.land_height
 	}
 		
 
@@ -76,7 +76,8 @@ function GameOverScene:init(params)
 	self.replay_button = Button.new(replay)
 	self.replay_button:setPosition(conf.WIDTH / 2 - self.scoreboard:getWidth() / 2 + replay:getWidth() / 2, bottom_buttons_pos_y)
 	
-	self.replay_button:addEventListener("click", function() 
+	self.replay_button:addEventListener("click", function(e) 
+		e:stopPropagation()
 		sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {
 			userData = {
 				isSoundEnabled = self.isSoundEnabled,
@@ -120,22 +121,23 @@ function GameOverScene:init(params)
 	
 	self:showScore(self.best_score, conf.HEIGHT / 2 + self.numbers[1]:getHeight() * 2)
 	
+	
 	if self.score > self.best_score then
-		local util = Utils.new()
-		util.writeBestScoreToFile(self.score)
+			
 		local medal_gold = Bitmap.new(Texture.new("assets/images/medal_gold.png"))
 		medal_gold:setAnchorPoint(0.5, 0.5)
+		
 		local medal_scale = conf.MEDAL_SCALE / medal_gold:getWidth()
+		
 		medal_gold:setScale(medal_scale, medal_scale)
 		medal_gold:setPosition(conf.WIDTH / 2 - self.scoreboard:getWidth() / 2 + medal_gold:getWidth(), conf.HEIGHT / 2)
 		self:addChild(medal_gold)
 		
 		self.best_score = self.score
+		util:writeBestScoreToFile(self.best_score)
 	end
 	
-	
 	self:addEventListener(Event.KEY_DOWN, self.onKeyDown, self)
-
 end
 
 function GameOverScene:showScore(score, pos_y)

@@ -18,17 +18,18 @@ function Splashscreen:init(options)
 	self.splash_image:setScale(scale, scale)
 
 	self:addChild(self.splash_image)
-	self:addEventListener(Event.MOUSE_DOWN, self.hide, self)
+	self:addEventListener(Event.MOUSE_DOWN, self.onMouseDown, self)
 	
 	self.showed = false
 	
 end
 
-
-function Splashscreen:hide()
+-- hide splashscreen
+function Splashscreen:onMouseDown(event)
+	event:stopPropagation()
 	
 	self:removeChild(self.splash_image)	
-	self:removeEventListener(Event.MOUSE_DOWN, self.hide, self)
+	self:removeEventListener(Event.MOUSE_DOWN, self.onMouseDown, self)
 	self.showed = true
 	
 end

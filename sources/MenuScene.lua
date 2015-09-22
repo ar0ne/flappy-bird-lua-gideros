@@ -54,10 +54,7 @@ function MenuScene:init(params)
 	self.rate_button = Button.new(rate)
 	self.rate_button:setPosition(conf.WIDTH / 2, conf.HEIGHT / 4 + self.rate_button:getHeight() * 2)
 	
-	self.rate_button:addEventListener("click", function() 
-		-- @TODO: open browser and go to the market place
-	end)
-	
+	self.rate_button:addEventListener("click", self.onClickedRateButton, self)
 	
 	local bottom_button_pos_y  = conf.HEIGHT * 4 / 6
 	
@@ -147,6 +144,14 @@ function MenuScene:init(params)
 	
 	self:addEventListener(Event.KEY_DOWN, self.onKeyDown, self)
 	
+end
+
+
+function MenuScene:onClickedRateButton(event)
+	event:stopPropagation()
+	if application:getDeviceInfo() == "Android" then
+		application:openUrl("http://play.google.com/store/apps/details?id=" .. conf.ANDROID_PACKAGE_NAME)	
+	end
 end
 
 function MenuScene:onKeyDown(event)

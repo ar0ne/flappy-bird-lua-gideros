@@ -32,15 +32,17 @@ conf = {
 	SPLASHSCREEN_SCALE 	= 0.7 * W,
 	
 	SCOREBOARD_SCALE 	= 0.8 * W,
-	REPLAY_SCALE 		= 0.3 * W,
+	REPLAY_SCALE 		= 0.35 * W,
 	
 	GAME_OVER_NUMBER_SCALE = 0.035 * H,
 	
 	LOGO_SCALE 			= 0.8  * W,
 	BUTTON_RATE_SCALE 	= 0.18 * W,
-	BUTTON_SCORE_SCALE 	= 0.3  * W,
+	BUTTON_SCORE_SCALE 	= 0.35  * W,
 	SOUND_ON_OFF_SCALE 	= 0.15 * W,
 
 	MEDAL_SCALE 		= 0.19  * W,
+	
+	ANDROID_PACKAGE_NAME = "org.arone.flappy_bird",
 
 }

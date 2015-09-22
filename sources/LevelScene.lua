@@ -11,16 +11,16 @@ LevelScene = Core.class(Sprite)
 
 function LevelScene:init(params)
 
+	local util = Utils.new()
+	
 	if params ~= nil then
 		if params.isSoundEnabled ~= nil and type(params.isSoundEnabled) == "boolean" then
 			self.isSoundEnabled = params.isSoundEnabled
 		else
 			self.isSoundEnabled = true
-		end
+		end	
 		
-		local util = Utils.new()
 		if params.best_score ~= nil then
-			
 			self.best_score = params.best_score
 		else
 			self.best_score = util.readBestScoreFromFile()
@@ -28,12 +28,10 @@ function LevelScene:init(params)
 		
 	else
 		self.isSoundEnabled = true
-		local util = Utils.new()
 		self.best_score = util.readBestScoreFromFile()
 	end
 
 	self.world = b2.World.new(0, conf.GRAVITY, true)
-	self.bodies = {}
 	
 	self.paused = true
 	
@@ -60,6 +58,7 @@ function LevelScene:init(params)
 		level_height 	= conf.HEIGHT,
 		speed 			= conf.BIRD_SPEED
 	}
+	self.bird:createBody()
 	
 	self.pipe = Pipe.new{
 		level 			= self,
@@ -81,9 +80,9 @@ function LevelScene:init(params)
 	}
 	
 	self.splashscreen = Splashscreen.new{
-		pos_x 		= conf.WIDTH / 2,
-		pos_y 		= conf.HEIGHT / 2,
-		scale 		= conf.SPLASHSCREEN_SCALE,
+		pos_x 			= conf.WIDTH / 2,
+		pos_y 			= conf.HEIGHT / 2,
+		scale 			= conf.SPLASHSCREEN_SCALE,
 	}
 	
 	self.die_sound = Sound.new("assets/sounds/sfx_hit.mp3")
@@ -109,10 +108,10 @@ function LevelScene:init(params)
 
 	
 	------ EVENTS -------
-	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
 	self:addEventListener("pipe_passed", self.onPipePassed, self)
-	self:addEventListener(Event.KEY_DOWN, self.onKeyDown, self)
 	self.world:addEventListener(Event.BEGIN_CONTACT, self.onBeginContact, self)
+	self:addEventListener(Event.KEY_DOWN, self.onKeyDown, self)
+	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
 	---------------------
 	
 end
@@ -120,27 +119,27 @@ end
 function LevelScene:onEnterFrame(event)
 
 	if not self.paused then
-				
-		self.world:step(1/60, 8, 3)
-		for i = 1, #self.bodies do
-			local body = self.bodies[i]
-			body.object:setPosition(body:getPosition())
-		end
+		event:stopPropagation()
 		
+		self.world:step(1/60, 8, 3)
+		local body = self.bird.body
+		body.object:setPosition(body:getPosition())
+
 	else 
 		if self.splashscreen.showed == true then
-			self.bird:createBody()
 			self.pipe.paused = false
 			self.bird.paused = false
 			self.splashscreen.showed = false
 			self.paused = false
+			self.bird.body:setLinearVelocity(0, -self.bird.speed)
 		end
 	end
 end
 
 function LevelScene:onBeginContact(event)
-
-	if not self.bird.paused then
+	event:stopPropagation()
+	
+	if not self.paused and not self.bird.paused then
 	
 		local fixtureA = event.fixtureA
 		local fixtureB = event.fixtureB
@@ -173,6 +172,7 @@ end
 
 function LevelScene:onPipePassed(event)
 	-- Increment game score
+	event:stopPropagation()
 	self.score:updateScore(self.score.count + 1)
 end
 
