@@ -23,12 +23,12 @@ function LevelScene:init(params)
 		if params.best_score ~= nil then
 			self.best_score = params.best_score
 		else
-			self.best_score = util.readBestScoreFromFile()
+			self.best_score = util:readBestScoreFromFile()
 		end
 		
 	else
 		self.isSoundEnabled = true
-		self.best_score = util.readBestScoreFromFile()
+		self.best_score = util:readBestScoreFromFile()
 	end
 
 	self.world = b2.World.new(0, conf.GRAVITY, true)
@@ -80,6 +80,7 @@ function LevelScene:init(params)
 	}
 	
 	self.splashscreen = Splashscreen.new{
+		level 			= self,
 		pos_x 			= conf.WIDTH / 2,
 		pos_y 			= conf.HEIGHT / 2,
 		scale 			= conf.SPLASHSCREEN_SCALE,
@@ -96,11 +97,11 @@ function LevelScene:init(params)
 	self:addChild(self.splashscreen)
 	
 	----- DEBUG ---------
-	--[[
-	local debugDraw = b2.DebugDraw.new()
-	self.world:setDebugDraw(debugDraw)
-	self:addChild(debugDraw)
-	--]]
+	if conf.DEBUG_MODE then
+		local debugDraw = b2.DebugDraw.new()
+		self.world:setDebugDraw(debugDraw)
+		self:addChild(debugDraw)
+	end
 	---------------------
 	
 	self.bg.paused = false
@@ -112,6 +113,7 @@ function LevelScene:init(params)
 	self.world:addEventListener(Event.BEGIN_CONTACT, self.onBeginContact, self)
 	self:addEventListener(Event.KEY_DOWN, self.onKeyDown, self)
 	self:addEventListener(Event.ENTER_FRAME, self.onEnterFrame, self)
+	self:addEventListener("splashscreen_showed", self.onSplashScreenShowed, self)
 	---------------------
 	
 end
@@ -125,14 +127,6 @@ function LevelScene:onEnterFrame(event)
 		local body = self.bird.body
 		body.object:setPosition(body:getPosition())
 
-	else 
-		if self.splashscreen.showed == true then
-			self.pipe.paused = false
-			self.bird.paused = false
-			self.splashscreen.showed = false
-			self.paused = false
-			self.bird.body:setLinearVelocity(0, -self.bird.speed)
-		end
 	end
 end
 
@@ -186,4 +180,14 @@ function LevelScene:onKeyDown(event)
 			})
 		end
 	end
+end
+
+function LevelScene:onSplashScreenShowed(event)
+	event:stopPropagation()
+	
+	self.pipe.paused = false
+	self.bird.paused = false
+	self.splashscreen.showed = false
+	self.paused = false
+	self.bird.body:setLinearVelocity(0, -self.bird.speed)
 end

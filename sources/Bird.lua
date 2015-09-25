@@ -59,42 +59,22 @@ function Bird:init(options)
 end
 
 
-
 function Bird:onEnterFrame(event)
 
 	if not self.paused then
 	
 		local x, y = self.body:getPosition()
 		
-		if self.body and x ~= self.pos_x then
-			self.body:setPosition(self.pos_x, y)
-		end
-		
-		local vel_x, vel_y = self.body:getLinearVelocity()
-		
-		if vel_y < -15 then
-			self.body:setLinearVelocity(0, -15 )
-		elseif vel_y > 15 then
-			self.body:setLinearVelocity(0, 15 )
-		end
-		
 		if y < 0 then
 			self.body:setPosition(x, 0)
 		end	
 		
-		local angle = 0
+		local _, vel_y = self.body:getLinearVelocity()
 		
-		if vel_y < 0 then
-			angle = math.min(vel_y / -10, -10)
-		elseif vel_y >= 10 then
-			angle = 90
-		elseif vel_y >= 0 and vel_y < 5 then
-			angle = math.min((vel_y / 10) * 10 , 10)
-		else
-			angle = math.min((vel_y / 10) * 90 , 90)
-		end
+		local angle = math.min((vel_y / 10) * 30 , 90)
 		
 		self.body.object:setRotation(angle)
+		
 	end
 	
 end

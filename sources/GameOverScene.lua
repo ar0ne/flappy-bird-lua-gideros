@@ -30,16 +30,14 @@ function GameOverScene:init(params)
 		if params.best_score ~= nil then
 			self.best_score = params.best_score
 		else
-			self.best_score = util.readBestScoreFromFile()
+			self.best_score = util:readBestScoreFromFile()
 		end
 		
 	else 
 		self.score = 0
 		self.isSoundEnabled = true
-		self.best_score = util.readBestScoreFromFile()
+		self.best_score = util:readBestScoreFromFile()
 	end
-	
-	print(self.score .. " | " .. self.best_score)
 	
 	self.level_width = conf.WIDTH
 
@@ -78,7 +76,7 @@ function GameOverScene:init(params)
 	
 	self.replay_button:addEventListener("click", function(e) 
 		e:stopPropagation()
-		sceneManager:changeScene("level", conf.TRANSITION_TIME,  SceneManager.fade, easing.inOutQuadratic, {
+		sceneManager:changeScene("level", 0,  SceneManager.fade, easing.inOutQuadratic, {
 			userData = {
 				isSoundEnabled = self.isSoundEnabled,
 				best_score = self.best_score

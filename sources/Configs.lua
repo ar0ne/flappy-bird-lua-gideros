@@ -12,8 +12,8 @@ conf = {
 	
 	BG_SPEED 			= 1.2,
 	PIPE_SPEED 			= 4.4,
-	BIRD_SPEED 			= 0.1  * H,
-	GRAVITY 			= 0.075 * H,
+	BIRD_SPEED 			= 0.02  * H,
+	GRAVITY 			= 0.065 * H,
 	LAND_SPEED 			= 4.4,
 	
 	PIPE_OFFSET 		= 0.17 * H,
@@ -44,5 +44,8 @@ conf = {
 	MEDAL_SCALE 		= 0.19  * W,
 	
 	ANDROID_PACKAGE_NAME = "org.arone.flappy_bird",
+	
+	DEBUG_MODE = false,
+	SECRET_KEY = 125,
 
 }
