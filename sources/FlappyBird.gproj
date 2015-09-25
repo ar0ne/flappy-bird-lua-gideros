@@ -1,5 +1,5 @@
 <project>
- <properties assetsOnly="0" iosDevice="0" encryptAssets="0" osx_org="GiderosMobile" win_domain="giderosmobile.com" architecture="0" retinaDisplay="0" autorotation="0" win_org="GiderosMobile" logicalHeight="800" encryptCode="0" logicalWidth="480" osx_domain="giderosmobile.com" windowHeight="0" mouseToTouch="1" touchToMouse="1" android_template="0" mouseTouchOrder="0" packageName="com.yourdomain.yourapp" windowWidth="0" orientation="0" fps="60" scaleMode="0">
+ <properties mouseTouchOrder="0" encryptCode="1" retinaDisplay="0" orientation="0" scaleMode="0" fps="60" mouseToTouch="1" encryptAssets="1" touchToMouse="1" osx_domain="giderosmobile.com" win_org="GiderosMobile" packageName="com.arone.flappy_bird" android_template="0" architecture="1" windowWidth="0" windowHeight="0" iosDevice="0" logicalWidth="480" win_domain="giderosmobile.com" assetsOnly="0" osx_org="GiderosMobile" autorotation="0" logicalHeight="800">
   <imageScales>
    <scale suffix="@2" scale="2"/>
   </imageScales>
