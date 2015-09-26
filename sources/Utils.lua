@@ -1,14 +1,14 @@
 Utils = Core.class()
 
 function Utils:init()
-	-- Key for XOR
-	self.key = conf.SECRET_KEY
-	
-	self.XOR_l =
-	{ 
-	   {0,1},
-	   {1,0},
-	}
+    -- Key for XOR
+    self.key = conf.SECRET_KEY
+    
+    self.XOR_l =
+    { 
+       {0,1},
+       {1,0},
+    }
 end
 
 function Utils:bytes_to_int(str, endian, signed) -- use length of string to determine 8,16,32,64 bits
